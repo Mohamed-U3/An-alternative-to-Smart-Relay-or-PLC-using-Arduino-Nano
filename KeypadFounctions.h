@@ -40,7 +40,14 @@ int Read_Buttons()             //reading if button is clicked or not
 void btnRIGHTFunction()           //IF right button is clicked
 {
   ScreenActive(); //Activating the screen Light and reseting the interval counter
-  Motor1_on();
+  if(PageNumber >= 1 && PageNumber < PageLimit)
+  {
+    PageNumber++;
+  }
+  else if(PageNumber >= PageLimit)
+  {
+    PageNumber = 1;
+  }
   delay(ButtonDelay);
 }
 
@@ -49,7 +56,14 @@ void btnRIGHTFunction()           //IF right button is clicked
 void btnLIFTFunction()            //IF lift button is clicked
 {
   ScreenActive(); //Activating the screen Light and reseting the interval counter
-  Motor1_off();
+  if(PageNumber <= 1)
+  {
+    PageNumber = PageLimit;
+  }
+  else if(PageNumber <= PageLimit)
+  {
+    PageNumber--;
+  }
   delay(ButtonDelay);
 }
 
@@ -68,7 +82,8 @@ void btnUPFunction()              //IF up button is clicked
     case InternalScreen4_Num: InternalScreen3(); break;
     case InternalScreen5_Num: InternalScreen4(); break;
     //its updates StepperSteps values.
-    case SubScreen1_Num:  StepperSteps++; if (StepperSteps >= 100) StepperSteps = 100; SubScreen1(); break;
+    case SubScreen0_Num:      SubScreen0();      break;
+    case SubScreen1_Num:      IncreaseTemp(&PageNumber);    break;
   }
   delay(ButtonDelay);
 }
@@ -86,7 +101,8 @@ void btnDOWNFunction()            //IF down button is clicked
     case InternalScreen4_Num:  InternalScreen5(); break;
     case InternalScreen5_Num:  InternalScreen0(); break;
     //its updates StepperSteps values.
-    case SubScreen1_Num:       StepperSteps--; if (StepperSteps <= 0) StepperSteps = 0;SubScreen1(); break;
+    case SubScreen0_Num:       SubScreen0();      break;
+    case SubScreen1_Num:       DecreaseTemp(&PageNumber);    break;
   }
   delay(ButtonDelay);
 }
@@ -101,9 +117,15 @@ void btnSELECTFunction()          //IF select button is clicked
     case  MainScreen_Num:       InternalScreen0(); break;
     case  InternalScreen0_Num:  SubScreen0();      break;
     case  InternalScreen1_Num:  SubScreen1();      break;
+    case  InternalScreen2_Num:  SubScreen2();      break;
+    case  InternalScreen3_Num:  SubScreen3();      break;
+    case  InternalScreen4_Num:  SubScreen4();      break;
     case  InternalScreen5_Num:  MainScreen();      break;
     case  SubScreen0_Num:       InternalScreen0(); break;
     case  SubScreen1_Num:       InternalScreen1(); break;
+    case  SubScreen2_Num:       InternalScreen2(); break;
+    case  SubScreen3_Num:       InternalScreen3(); break;
+    case  SubScreen4_Num:       InternalScreen4(); break;
   }
   delay(ButtonDelay);
 }
@@ -130,10 +152,10 @@ void btnNONEFunction()            //IF none button is clicked
   }
   switch (ScreenNumber) //its updates seconds when not pushing any buttons
   {
-    case SubScreen0_Num: SubScreen0_dyn(); break;
-    case SubScreen1_Num: SubScreen1_dyn(); break;
-    case SubScreen2_Num: SubScreen2_dyn(); break;
-    case SubScreen3_Num: SubScreen3_dyn(); break;
+    case SubScreen0_Num: SubScreen0(); break;
+    case SubScreen1_Num: SubScreen1(); break;
+    case SubScreen2_Num: SubScreen2(); break;
+    case SubScreen3_Num: SubScreen3(); break;
   }
 }
 

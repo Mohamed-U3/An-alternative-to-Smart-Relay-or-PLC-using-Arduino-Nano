@@ -7,7 +7,6 @@
 #include "GPIOInputChickFounction.h"
 #include "ISR_Founctions.h"
 
-
 void setup()
 {
   //Serial.begin(9600);
@@ -15,7 +14,7 @@ void setup()
   Motors_init();
   ScreenInit();
   Thermister_init();
-  GPIO_init();
+//  GPIO_init();
 
   delay(1000);
   MainScreen();

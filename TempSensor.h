@@ -3,8 +3,13 @@
 
 #include<math.h>
 
+#include "ScreensFunctions.h"
+
 #define Thermister_1_pin  A6
 #define Thermister_2_pin  A7
+
+float SetPoint      = 22.00;
+float SetPointDiff  = 2.00;
 
 void Thermister_init()
 {
@@ -41,4 +46,29 @@ double Thermister2()
   //Serial.println(" PIN Reading");
   return temp;
 }
+
+void IncreaseTemp(unsigned int * pagenum)
+{
+  if(*pagenum == 1)
+  {
+    SetPoint++;
+  }
+  else if(*pagenum == 2)
+  {
+    SetPointDiff++;
+  }
+}
+
+void DecreaseTemp(unsigned int * pagenum)
+{
+  if(*pagenum == 1)
+  {
+    SetPoint--;
+  }
+  else if(*pagenum == 2)
+  {
+    SetPointDiff--;
+  }
+}
+
 #endif

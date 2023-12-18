@@ -18,10 +18,10 @@ void ISR_init()
   PCMSK1 |= (1 << PCINT8); // Enable interrupt for A0 (PCINT14)
   PCICR |= (1 << PCIE1); // Enable Pin Change Interrupt for PCINT8-14
 
-  // Set pins 0 to 14 as inputs with pull-up resistors
+  // Set pins 0 to 14 as inputs
   for (int i = 0; i <= 14; i++)
   {
-    pinMode(i, INPUT_PULLUP); // Set pins as input with pull-up resistors
+    pinMode(i, INPUT); // Set pins as input
   }
 }
 
