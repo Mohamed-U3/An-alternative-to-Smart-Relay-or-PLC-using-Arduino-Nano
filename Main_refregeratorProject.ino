@@ -14,7 +14,7 @@ void setup()
   Motors_init();
   ScreenInit();
   Thermister_init();
-//  GPIO_init();
+  //GPIO_init();
 
   delay(1000);
   MainScreen();
@@ -22,18 +22,7 @@ void setup()
 
 void loop()
 {
-  HMI();
-
+  Alarm_sum();
   
-//  if (GPIO_Chick())
-//  {
-//    HMI();
-//  }
-
-//  if (!GPIO_Chick())
-//  {
-//    Motor1_off();
-//    Motor2_off();
-//  }
-
+  HMI();
 }

@@ -23,7 +23,26 @@
     D12_OverLoadCFM2()
     D13_MotorProtector2()
     D14_OilPressure2()
+  ====================================================
  */
+
+bool D0_SW_Alarm                    = LOW;
+bool D1_FlowSW_Alarm                = LOW;
+bool D2_PhaseSq_Alarm               = LOW;
+bool D3_HighPressure1_Alarm         = LOW;
+bool D4_LowPressure1_Alarm          = LOW;
+bool D5_OverLoadComperssor1_Alarm   = LOW;
+bool D6_OverLoadCFM1_Alarm          = LOW;
+bool D7_MotorProtector1_Alarm       = LOW;
+bool D8_OilPressure1_Alarm          = LOW;
+bool D9_HighPressure2_Alarm         = LOW;
+bool D10_LowPressure2_Alarm         = LOW;
+bool D11_OverLoadComperssor2_Alarm  = LOW;
+bool D12_OverLoadCFM2_Alarm         = LOW;
+bool D13_MotorProtector2_Alarm      = LOW;
+bool D14_OilPressure2_Alarm         = LOW;
+
+bool anyAlarm = LOW;
 
 void GPIO_init()
 {
@@ -31,23 +50,23 @@ void GPIO_init()
   { pinMode(i , INPUT); }
 }
 
-bool GPIO_Chick()
+void Alarm_sum()
 {
-  return digitalRead(0)&
-         digitalRead(1)&
-         digitalRead(2)&
-         digitalRead(3)&
-         digitalRead(4)&
-         digitalRead(5)&
-         digitalRead(6)&
-         digitalRead(7)&
-         digitalRead(8)&
-         digitalRead(9)&
-         digitalRead(10)&
-         digitalRead(11)&
-         digitalRead(12)&
-         digitalRead(13)&
-         digitalRead(14);
+  anyAlarm =  D0_SW_Alarm                   &
+              D1_FlowSW_Alarm               &
+              D2_PhaseSq_Alarm              &
+              D3_HighPressure1_Alarm        &
+              D4_LowPressure1_Alarm         &
+              D5_OverLoadComperssor1_Alarm  &
+              D6_OverLoadCFM1_Alarm         &
+              D7_MotorProtector1_Alarm      &
+              D8_OilPressure1_Alarm         &
+              D9_HighPressure2_Alarm        &
+              D10_LowPressure2_Alarm        &
+              D11_OverLoadComperssor2_Alarm &
+              D12_OverLoadCFM2_Alarm        &
+              D13_MotorProtector2_Alarm     &
+              D14_OilPressure2_Alarm        ;
 }
 
 String D0_SW()
