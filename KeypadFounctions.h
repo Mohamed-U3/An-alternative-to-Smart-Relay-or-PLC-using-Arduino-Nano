@@ -125,7 +125,7 @@ void btnSELECTFunction()          //IF select button is clicked
     case  SubScreen1_Num:       InternalScreen1(); break;
     case  SubScreen2_Num:       InternalScreen2(); break;
     case  SubScreen3_Num:       InternalScreen3(); break;
-    case  SubScreen4_Num:       InternalScreen4(); break;
+    case  SubScreen4_Num:       ScreenAlarm();     break;
   }
   delay(ButtonDelay);
 }
@@ -156,6 +156,7 @@ void btnNONEFunction()            //IF none button is clicked
     case SubScreen1_Num: SubScreen1(); break;
     case SubScreen2_Num: SubScreen2(); break;
     case SubScreen3_Num: SubScreen3(); break;
+    case SubScreen4_Num: SubScreen4(); break;
   }
 }
 

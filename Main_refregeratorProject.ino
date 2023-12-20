@@ -23,6 +23,8 @@ void setup()
 void loop()
 {
   Alarm_sum();
+
+  Operation();
   
   HMI();
 }

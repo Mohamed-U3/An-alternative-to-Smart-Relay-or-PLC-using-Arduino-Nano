@@ -34,6 +34,10 @@ const long interval = 10000;
 bool isMainMenu = false;
 bool isBacklightOn = true;
 
+//Decliration of the Founction Because ScreenAlarm() is using it
+void InternalScreen4();
+void MainScreen();
+
 void ScreenInit()
 {
   currentMillis = millis();
@@ -61,6 +65,44 @@ void ScreenInactive()
   previousMillis = currentMillis;
   isBacklightOn = false;
   lcd.noBacklight();
+}
+
+void ScreenAlarm()
+{
+  if(PageNumber == 1) InternalScreen4();  // Do nothing
+  else if (PageNumber == 2)               // reset Alarms
+  {
+    D0_SW_Alarm                     = LOW;
+    D1_FlowSW_Alarm                 = LOW;
+    D2_PhaseSq_Alarm                = LOW;
+    D3_HighPressure1_Alarm          = LOW;
+    D4_LowPressure1_Alarm           = LOW;
+    D5_OverLoadComperssor1_Alarm    = LOW;
+    D6_OverLoadCFM1_Alarm           = LOW;
+    D7_MotorProtector1_Alarm        = LOW;
+    D8_OilPressure1_Alarm           = LOW;
+    D9_HighPressure2_Alarm          = LOW;
+    D10_LowPressure2_Alarm          = LOW;
+    D11_OverLoadComperssor2_Alarm   = LOW;
+    D12_OverLoadCFM2_Alarm          = LOW;
+    D13_MotorProtector2_Alarm       = LOW;
+    D14_OilPressure2_Alarm          = LOW;
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(F("<<---Alarms Reset->>"));
+    lcd.setCursor(0, 1);
+    lcd.print(F("                    "));
+    lcd.setCursor(0, 2);
+    lcd.print(F("All Alarms Have been"));
+    lcd.setCursor(0, 3);
+    lcd.print(F("       reset        "));
+
+    delay(1000);
+
+    MainScreen();
+  }
+  else PageNumber = 1;
 }
 
 //Main Menu Start--------------------------
@@ -556,18 +598,29 @@ void SubScreen3()
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
+
+      lcd.setCursor(5, 1);
+      lcd.print(D0_SW_Alarm);
       
+      lcd.setCursor(8, 2);
+      lcd.print(D1_FlowSW_Alarm);
+
+      lcd.setCursor(9, 3);
+      lcd.print(D2_PhaseSq_Alarm);
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("SW1:                "));
+      
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
+      lcd.print(F("FolwSW:             "));
+      
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("PhaseSq:            "));
+      
       
       isPagePrinted = PageNumber;
     }
@@ -578,18 +631,35 @@ void SubScreen3()
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
+
       
+      lcd.setCursor(5, 1);
+      lcd.print(D3_HighPressure1_Alarm);
+      lcd.setCursor(15, 1);
+      lcd.print(D9_HighPressure2_Alarm);
+      
+      lcd.setCursor(5, 2);
+      lcd.print(D4_LowPressure1_Alarm);
+      lcd.setCursor(15, 2);
+      lcd.print(D10_LowPressure2_Alarm);
+
+      lcd.setCursor(6, 3);
+      lcd.print(D5_OverLoadComperssor1_Alarm);
+      lcd.setCursor(16, 3);
+      lcd.print(D11_OverLoadComperssor2_Alarm);
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("HP1:      HP2:      "));
+      
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
+      lcd.print(F("LP1:      LP2:      "));
+      
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("OLC1:     OLC2:     "));
       
       isPagePrinted = PageNumber;
     }
@@ -600,18 +670,34 @@ void SubScreen3()
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
+
+      lcd.setCursor(7, 1);
+      lcd.print(D6_OverLoadCFM1_Alarm);
+      lcd.setCursor(17, 1);
+      lcd.print(D12_OverLoadCFM2_Alarm);
       
+      lcd.setCursor(5, 2);
+      lcd.print(D7_MotorProtector1_Alarm);
+      lcd.setCursor(15, 2);
+      lcd.print(D13_MotorProtector2_Alarm);
+
+      lcd.setCursor(6, 3);
+      lcd.print(D8_OilPressure1_Alarm);
+      lcd.setCursor(16, 3);
+      lcd.print(D14_OilPressure2_Alarm);
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("OLCFM1:   OLCFM2:   "));
+      
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
+      lcd.print(F("MP1:      MP2:      "));
+      
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("OilP1:    OilP2:    "));
       
       isPagePrinted = PageNumber;
     }
@@ -633,34 +719,33 @@ void SubScreen4()
   lcd.setCursor(0, 0);
   lcd.print(F("<<---Alarms Reset->>"));            //-------- ====== Alarms Reset ====== -------
 
-  PageLimit = 3;
+  PageLimit = 2;
   if(PageNumber == 1)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
-      lcd.setCursor(4, 0);
+      lcd.setCursor(3, 0);
       lcd.print(PageNumber);
-      
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F(" Reset all Alarms ? "));
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
-      lcd.setCursor(0, 3);
       lcd.print(F("                    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F(">> No <<    Yes     "));
       
       isPagePrinted = PageNumber;
     }
   }
   else if(PageNumber == 2)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
-      lcd.setCursor(4, 0);
+      lcd.setCursor(3, 0);
       lcd.print(PageNumber);
       
     }
@@ -669,11 +754,11 @@ void SubScreen4()
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F(" Reset all Alarms ? "));
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
-      lcd.setCursor(0, 3);
       lcd.print(F("                    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F("   No    >> Yes <<  "));
       
       isPagePrinted = PageNumber;
     }
@@ -682,7 +767,7 @@ void SubScreen4()
   {
         if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
-      lcd.setCursor(4, 0);
+      lcd.setCursor(3, 0);
       lcd.print(PageNumber);
       
     }

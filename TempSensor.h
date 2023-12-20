@@ -4,6 +4,7 @@
 #include<math.h>
 
 #include "ScreensFunctions.h"
+#include "GPIOInputChickFounction.h"
 
 #define Thermister_1_pin  A6
 #define Thermister_2_pin  A7
@@ -47,27 +48,39 @@ double Thermister2()
   return temp;
 }
 
-void IncreaseTemp(unsigned int * pagenum)
+void IncreaseTemp(unsigned int * page_num)
 {
-  if(*pagenum == 1)
+  if(*page_num == 1)
   {
     SetPoint++;
   }
-  else if(*pagenum == 2)
+  else if(*page_num == 2)
   {
     SetPointDiff++;
   }
 }
 
-void DecreaseTemp(unsigned int * pagenum)
+void DecreaseTemp(unsigned int * page_num)
 {
-  if(*pagenum == 1)
+  if(*page_num == 1)
   {
     SetPoint--;
   }
-  else if(*pagenum == 2)
+  else if(*page_num == 2)
   {
     SetPointDiff--;
+  }
+}
+
+void check_Input_Output_temp_def()
+{
+  if(Thermister1() < Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
+  {
+    temperature_difference_Alarm = HIGH;
+  }
+  else
+  {
+    temperature_difference_Alarm = LOW;
   }
 }
 
