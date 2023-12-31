@@ -11,6 +11,8 @@
 
 float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
+String Temp_Alarm_reason1 = "Empty";
+String Temp_Alarm_reason2 = "Empty";
 
 void Thermister_init()
 {
@@ -74,13 +76,23 @@ void DecreaseTemp(unsigned int * page_num)
 
 void check_Input_Output_temp_def()
 {
-  if(Thermister1() < Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
+  if(Thermister1() <= Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
   {
     temperature_difference_Alarm = HIGH;
+    Temp_Alarm_reason1 = "reverse flow or     ";
+    Temp_Alarm_reason2 = " sensor failure     ";
   }
-  else
+  if(Thermister1() < 4 || Thermister2() < 4)
   {
-    temperature_difference_Alarm = LOW;
+    Temp_Alarm_reason1 = "Low temp or sensor  ";
+    Temp_Alarm_reason2 = " failure            ";
+    temperature_difference_Alarm = HIGH;
+  }
+  if (temperature_difference_Alarm == LOW)
+  {
+    Temp_Alarm_reason1 = "Empty";
+    Temp_Alarm_reason2 = "Empty";
+    //temperature_difference_Alarm = LOW;
   }
 }
 

@@ -44,8 +44,14 @@ void Motor2_off()
 
 void Operation()
 {
+  check_Input_Output_temp_def();
+
   // comp. 1
-  if ((millis() - PreMillis1) >= Com_1_OperationDelay)   // check if the OperationDelay time is out.
+  if ((Thermister1() <= SetPoint) || anyAlarm || anyAlarm1)         //if we reached to the set point turn off the comperssor or there are any alarms
+  {
+    Motor1_off();
+  }
+  else if ((millis() - PreMillis1) >= Com_1_OperationDelay)   // check if the OperationDelay time is out.
   {
     if (Thermister1() >= (SetPoint + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
     {
@@ -53,12 +59,12 @@ void Operation()
     }
     PreMillis1 = millis(); // reset the time counter.
   }
-  if ((Thermister1() <= SetPoint) || anyAlarm )         //if we reached to the set point turn off the comperssor or there are any alarms
+  
+  if (Thermister1() <= (SetPoint + TempDefBetCom1andCom2) || anyAlarm || anyAlarm2)       //if we reached to the set point turn off the comperssor or there are any alarms
   {
-    Motor1_off();
+    Motor2_off();
   }
-
-  if ((millis() - PreMillis2) >= Com_2_OperationDelay)   // check if the OperationDelay time is out.
+  else if ((millis() - PreMillis2) >= Com_2_OperationDelay)   // check if the OperationDelay time is out.
   {
     // comp. 2
     if (Thermister1() >= (SetPoint + TempDefBetCom1andCom2 + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
@@ -67,11 +73,5 @@ void Operation()
     }
     PreMillis2 = millis(); // reset the time counter.
   }
-  if (Thermister1() <= (SetPoint + TempDefBetCom1andCom2) || anyAlarm )       //if we reached to the set point turn off the comperssor or there are any alarms
-  {
-    Motor2_off();
-  }
-
-  check_Input_Output_temp_def();
 }
 #endif

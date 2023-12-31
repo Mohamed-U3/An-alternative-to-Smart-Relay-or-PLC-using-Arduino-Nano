@@ -29,7 +29,7 @@ char        isPagePrinted = 0;
 //For interval, Turn Off Lcd backlight.
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
-const long interval = 10000;
+const long interval = 30000;
 
 bool isMainMenu = false;
 bool isBacklightOn = true;
@@ -87,6 +87,7 @@ void ScreenAlarm()
     D12_OverLoadCFM2_Alarm          = LOW;
     D13_MotorProtector2_Alarm       = LOW;
     D14_OilPressure2_Alarm          = LOW;
+    temperature_difference_Alarm    = LOW;
 
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -110,15 +111,25 @@ void MainScreen()
 {
   isMainMenu = true;
   ScreenNumber = MainScreen_Num;
-  lcd.clear();
+//  lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(F("--------Menu--------"));
+  if(anyAlarm || anyAlarm1 || anyAlarm2)
+  {
+    lcd.setCursor(0, 1);
+    lcd.print(F("   Alarm            "));
+  }
+  else
+  {
+    lcd.setCursor(0, 1);
+    lcd.print(F("                    "));
+  }
   lcd.setCursor(0, 2);
   lcd.print(F("Time: 11:11         "));
   lcd.setCursor(0, 3);
   lcd.print(F("Date: 17.12.2023    "));
 
-  previousMillis = millis();
+//  previousMillis = millis();
   isPagePrinted = 0;
   
   //For Debug
@@ -275,12 +286,15 @@ void SubScreen0()
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
-      static int google = 1;
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
-    
+
+      
       lcd.setCursor(11, 1);
-      lcd.print(google++);      //there will be (SW. OFF - SW. ON - Alarm) in here.
+      if(digitalRead(0) == HIGH)
+      lcd.print("ON ");      //there will be (SW. OFF - SW. ON - Alarm) in here.
+      else
+      lcd.print("OFF");      //there will be (SW. OFF - SW. ON - Alarm) in here.
 
       lcd.setCursor(15, 2);
       lcd.print(Thermister1());
@@ -379,19 +393,24 @@ void SubScreen1()
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(10, 1);
+      lcd.setCursor(12, 1);
       lcd.print(SetPoint);
+
+      lcd.setCursor(12, 2);
+      lcd.print(SetPointDiff);
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("Setpoint:       C   "));
-      lcd.setCursor(15, 1);
+      lcd.print(F("->Setpoint:       C "));
+      lcd.setCursor(17, 1);
       lcd.print(char(223));
       lcd.setCursor(0, 2);
-      lcd.print(F("                    "));
+      lcd.print(F("  Diff:           C "));
+      lcd.setCursor(17, 2);
+      lcd.print(char(223));
       lcd.setCursor(0, 3);
       lcd.print(F("                    "));
       
@@ -405,22 +424,27 @@ void SubScreen1()
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(10, 2);
+      lcd.setCursor(12, 1);
+      lcd.print(SetPoint);
+
+      lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
     }
     else                           //for the statics in the page
     {
       lcd.clear();
-      
+
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("  Setpoint:       C "));
+      lcd.setCursor(17, 1);
+      lcd.print(char(223));
       lcd.setCursor(0, 2);
-      lcd.print(F("Diff:           C   "));
-      lcd.setCursor(15, 2);
+      lcd.print(F("->Diff:           C "));
+      lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
       lcd.print(F("                    "));
-      
+
       isPagePrinted = PageNumber;
     }
   }
@@ -591,7 +615,7 @@ void SubScreen3()
   lcd.setCursor(0, 0);
   lcd.print(F("<<------Alarms---->>"));            //-------- ====== Alarms ====== -------
 
-  PageLimit = 3;
+  PageLimit = 4;
   if(PageNumber == 1)
   {
         if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -698,6 +722,38 @@ void SubScreen3()
       
       lcd.setCursor(0, 3);
       lcd.print(F("OilP1:    OilP2:    "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 4)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(12, 1);
+      lcd.print(temperature_difference_Alarm);
+      
+      lcd.setCursor(0, 2);
+      lcd.print(Temp_Alarm_reason1);
+
+      lcd.setCursor(0, 3);
+      lcd.print(Temp_Alarm_reason2);
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("temp. alarm:        "));
+      
+      lcd.setCursor(0, 2);
+      lcd.print(F("                    "));
+      
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
       
       isPagePrinted = PageNumber;
     }

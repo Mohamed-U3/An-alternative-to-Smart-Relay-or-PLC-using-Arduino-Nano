@@ -24,14 +24,17 @@ int Read_Buttons()             //reading if button is clicked or not
 {
   ButtonsRead = analogRead(A3);
   delay(5);
-  //Serial.print(F("button value: "));      //used for calibraation.
-  //Serial.println(ButtonsRead);
-  if (ButtonsRead > 950)  return btnNONE;   //the value should be 1023
-  if (ButtonsRead < 100)  return btnRIGHT;  //the value should be 0
-  if (ButtonsRead < 250)  return btnDOWN;   //the value should be 145
-  if (ButtonsRead < 450)  return btnUP;     //the value should be 330
-  if (ButtonsRead < 900)  return btnLEFT;   //the value should be 506
-  if (ButtonsRead < 950)  return btnSELECT; //the value should be 933
+//  lcd.setCursor(0,1);
+//  lcd.print(F("                    "));
+//  lcd.setCursor(0,1);
+//  lcd.print(F("button value: "));      //used for calibraation.
+  //lcd.print(ButtonsRead);
+  if (ButtonsRead > 800)  return btnNONE;   //the value should be 1023
+  if (ButtonsRead < 20)   return btnRIGHT;  //the value should be 0
+  if (ButtonsRead < 80)   return btnDOWN;   //the value should be 145
+  if (ButtonsRead < 160)  return btnUP;     //the value should be 330
+  if (ButtonsRead < 500)  return btnLEFT;   //the value should be 506
+  if (ButtonsRead < 800)  return btnSELECT; //the value should be 933
   return btnNONE;  // when all others fail, return this
 }
 
@@ -134,6 +137,13 @@ void btnNONEFunction()            //IF none button is clicked
 {
   if (isMainMenu)       //are we in the main menu now ? 
   {
+    static long prevMillis = 0;
+    if ((millis() - prevMillis >= 50))  // refresh screen
+    {
+      MainScreen(); //refresh main mainscreen
+      static long prevMillis = millis();
+    }
+       
     if (isBacklightOn && (currentMillis - previousMillis >= interval))  // Turn Off LCD Backlight
     {
       ScreenInactive();
@@ -147,7 +157,7 @@ void btnNONEFunction()            //IF none button is clicked
     if (currentMillis - previousMillis >= interval)   // check if the interval time is out.
     {
       previousMillis = currentMillis; // reset the time counter.
-      MainScreen();                   // go to the main menu
+      MainScreen();                   // go to the main screen.
     }
   }
   switch (ScreenNumber) //its updates seconds when not pushing any buttons

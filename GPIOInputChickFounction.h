@@ -45,6 +45,8 @@ bool D14_OilPressure2_Alarm         = LOW;
 bool temperature_difference_Alarm   = LOW;
 
 bool anyAlarm                       = LOW;
+bool anyAlarm1                      = LOW;
+bool anyAlarm2                      = LOW;
 
 void GPIO_init()
 {
@@ -54,7 +56,11 @@ void GPIO_init()
 
 String D0_SW()
 {
-  if(digitalRead(0) == HIGH)  return "OK ";
+  if(digitalRead(0) == HIGH)
+  {
+    D0_SW_Alarm = LOW;
+    return "OK ";
+  }
   else
   {
     D0_SW_Alarm = HIGH;
@@ -230,18 +236,22 @@ void Alarm_sum()
   anyAlarm =  D0_SW_Alarm                   |
               D1_FlowSW_Alarm               |
               D2_PhaseSq_Alarm              |
-              D3_HighPressure1_Alarm        |
+              temperature_difference_Alarm  ;
+              
+  anyAlarm1 = D3_HighPressure1_Alarm        |
               D4_LowPressure1_Alarm         |
               D5_OverLoadComperssor1_Alarm  |
               D6_OverLoadCFM1_Alarm         |
               D7_MotorProtector1_Alarm      |
-              D8_OilPressure1_Alarm         |
-              D9_HighPressure2_Alarm        |
+              D8_OilPressure1_Alarm         ;
+              
+  anyAlarm2 = D9_HighPressure2_Alarm        |
               D10_LowPressure2_Alarm        |
               D11_OverLoadComperssor2_Alarm |
               D12_OverLoadCFM2_Alarm        |
               D13_MotorProtector2_Alarm     |
               D14_OilPressure2_Alarm        ;
+              
 }
 
 #endif

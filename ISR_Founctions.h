@@ -29,18 +29,25 @@ void ISR_init()
 // Interrupt service routine for pin change interrupt group PCINT16-23
 ISR(PCINT2_vect)
 {
-  //Stop the motors
-  Motor1_off();
-  Motor2_off();
+  if(!digitalRead(0) == LOW || !digitalRead(1) || !digitalRead(2))
+  {
+    //Stop the motors
+    Motor1_off();
+    Motor2_off();
+  }
+  if(!digitalRead(0))  D0_SW_Alarm                   = HIGH;
+  if(!digitalRead(1))  D1_FlowSW_Alarm               = HIGH;
+  if(!digitalRead(2))  D2_PhaseSq_Alarm              = HIGH;
   
-  if(digitalRead(0))  D0_SW_Alarm                   = HIGH;
-  if(digitalRead(1))  D1_FlowSW_Alarm               = HIGH;
-  if(digitalRead(2))  D2_PhaseSq_Alarm              = HIGH;
-  if(digitalRead(3))  D3_HighPressure1_Alarm        = HIGH;
-  if(digitalRead(4))  D4_LowPressure1_Alarm         = HIGH;
-  if(digitalRead(5))  D5_OverLoadComperssor1_Alarm  = HIGH;
-  if(digitalRead(6))  D6_OverLoadCFM1_Alarm         = HIGH;
-  if(digitalRead(7))  D7_MotorProtector1_Alarm      = HIGH;
+  if(!digitalRead(3) || !digitalRead(4) || !digitalRead(5) || !digitalRead(6) || !digitalRead(7))
+  {
+    Motor1_off();
+  }
+  if(!digitalRead(3))  D3_HighPressure1_Alarm        = HIGH;
+  if(!digitalRead(4))  D4_LowPressure1_Alarm         = HIGH;
+  if(!digitalRead(5))  D5_OverLoadComperssor1_Alarm  = HIGH;
+  if(!digitalRead(6))  D6_OverLoadCFM1_Alarm         = HIGH;
+  if(!digitalRead(7))  D7_MotorProtector1_Alarm      = HIGH;
 
   /*
   pinValues = (PIND & 0xFF); // Read pins D0-D7
@@ -62,16 +69,20 @@ ISR(PCINT2_vect)
 // Interrupt service routine for pin change interrupt group PCINT0-5
 ISR(PCINT0_vect)
 {
-  //Stop the motors
-  Motor1_off();
-  Motor2_off();
-
-  if(digitalRead(8))  D8_OilPressure1_Alarm         = HIGH;
-  if(digitalRead(9))  D9_HighPressure2_Alarm        = HIGH;
-  if(digitalRead(10)) D10_LowPressure2_Alarm        = HIGH;
-  if(digitalRead(11)) D11_OverLoadComperssor2_Alarm = HIGH;
-  if(digitalRead(12)) D12_OverLoadCFM2_Alarm        = HIGH;
-  if(digitalRead(13)) D13_MotorProtector2_Alarm     = HIGH;
+  if(!digitalRead(8))
+  {
+    D8_OilPressure1_Alarm                           = HIGH;
+    Motor1_off();         //Stop the motors
+  }
+  if(!digitalRead(9) || !digitalRead(10) || !digitalRead(11) || !digitalRead(12) || !digitalRead(13))
+  {
+    Motor2_off();
+  }
+  if(!digitalRead(9))  D9_HighPressure2_Alarm        = HIGH;
+  if(!digitalRead(10)) D10_LowPressure2_Alarm        = HIGH;
+  if(!digitalRead(11)) D11_OverLoadComperssor2_Alarm = HIGH;
+  if(!digitalRead(12)) D12_OverLoadCFM2_Alarm        = HIGH;
+  if(!digitalRead(13)) D13_MotorProtector2_Alarm     = HIGH;
   /*
   pinValues = (PINB & 0x3F); // Read pins D8-D13
   // Perform actions based on pinValues for pins D8-D13
@@ -93,10 +104,6 @@ ISR(PCINT0_vect)
 // Interrupt service routine for pin change interrupt group PCINT8-14 (A0)
 ISR(PCINT1_vect)
 {
-  //Stop the motors
-  Motor1_off();
-  Motor2_off();
-
   pinValues = (PINC & 0x01); // Read pin A0 (PCINT14)
   // Perform actions based on pinValues for A0
   // Example:
@@ -104,6 +111,7 @@ ISR(PCINT1_vect)
   {
     // A0 changed to HIGH
     D14_OilPressure2_Alarm = HIGH;
+    Motor2_off();           //Stop the motors
   } else
   {
     // A0 changed to LOW
