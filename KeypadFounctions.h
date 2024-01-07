@@ -128,14 +128,14 @@ void btnSELECTFunction()          //IF select button is clicked
     case  SubScreen1_Num:       InternalScreen1(); break;
     case  SubScreen2_Num:       InternalScreen2(); break;
     case  SubScreen3_Num:       InternalScreen3(); break;
-    case  SubScreen4_Num:       ScreenAlarm();     break;
+    case  SubScreen4_Num:       ScreenAlarm();     break; //when reset alarm is clicked
   }
   delay(ButtonDelay);
 }
 /***************------ Function ------ none -------**********/
 void btnNONEFunction()            //IF none button is clicked
 {
-  if (isMainMenu)       //are we in the main menu now ? 
+  if (isMainMenu)       //are we in the main menu now ?
   {
     static long prevMillis = 0;
     if ((millis() - prevMillis >= 50))  // refresh screen
@@ -143,7 +143,7 @@ void btnNONEFunction()            //IF none button is clicked
       MainScreen(); //refresh main mainscreen
       static long prevMillis = millis();
     }
-       
+    
     if (isBacklightOn && (currentMillis - previousMillis >= interval))  // Turn Off LCD Backlight
     {
       ScreenInactive();

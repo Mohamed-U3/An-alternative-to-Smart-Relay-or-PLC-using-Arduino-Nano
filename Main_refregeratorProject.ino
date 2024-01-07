@@ -15,7 +15,7 @@ void setup()
   ScreenInit();
   Thermister_init();
   //GPIO_init();
-
+  
   delay(1000);
   MainScreen();
 }

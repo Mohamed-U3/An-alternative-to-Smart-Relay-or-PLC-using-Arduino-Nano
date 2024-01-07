@@ -30,6 +30,8 @@ char        isPagePrinted = 0;
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
 const long interval = 30000;
+bool resetTimerFlag1 = 0;
+bool resetTimerFlag2 = 0;
 
 bool isMainMenu = false;
 bool isBacklightOn = true;
@@ -67,27 +69,43 @@ void ScreenInactive()
   lcd.noBacklight();
 }
 
-void ScreenAlarm()
+void ScreenAlarm()   //function that called when user resets alarms
 {
   if(PageNumber == 1) InternalScreen4();  // Do nothing
   else if (PageNumber == 2)               // reset Alarms
   {
+    if(D0_SW_Alarm || D1_FlowSW_Alarm || D2_PhaseSq_Alarm || temperature_difference_Alarm)
+    {
+      resetTimerFlag1                 = HIGH;
+      resetTimerFlag2                 = HIGH;
+    }
+    if(D3_HighPressure1_Alarm || D4_LowPressure1_Alarm || D5_OverLoadComperssor1_Alarm || D6_OverLoadCFM1_Alarm || D7_MotorProtector1_Alarm || D8_OilPressure1_Alarm)
+    {
+      resetTimerFlag1               = HIGH;
+    }
+    if(D9_HighPressure2_Alarm || D10_LowPressure2_Alarm || D11_OverLoadComperssor2_Alarm || D12_OverLoadCFM2_Alarm || D13_MotorProtector2_Alarm || D14_OilPressure2_Alarm)
+    {
+      resetTimerFlag2               = HIGH;
+    }
+
+    temperature_difference_Alarm    = LOW;
     D0_SW_Alarm                     = LOW;
     D1_FlowSW_Alarm                 = LOW;
     D2_PhaseSq_Alarm                = LOW;
+    
     D3_HighPressure1_Alarm          = LOW;
     D4_LowPressure1_Alarm           = LOW;
     D5_OverLoadComperssor1_Alarm    = LOW;
     D6_OverLoadCFM1_Alarm           = LOW;
     D7_MotorProtector1_Alarm        = LOW;
     D8_OilPressure1_Alarm           = LOW;
+    
     D9_HighPressure2_Alarm          = LOW;
     D10_LowPressure2_Alarm          = LOW;
     D11_OverLoadComperssor2_Alarm   = LOW;
     D12_OverLoadCFM2_Alarm          = LOW;
     D13_MotorProtector2_Alarm       = LOW;
     D14_OilPressure2_Alarm          = LOW;
-    temperature_difference_Alarm    = LOW;
 
     lcd.clear();
     lcd.setCursor(0, 0);

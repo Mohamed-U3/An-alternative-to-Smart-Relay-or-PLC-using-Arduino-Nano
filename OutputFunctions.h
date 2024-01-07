@@ -3,8 +3,8 @@
 
 #define Motor1_pin      A1
 #define Motor2_pin      A2
-#define Com_1_OperationDelay  3000//300000
-#define Com_2_OperationDelay  5000//500000
+#define Com_1_OperationDelay  30000//300000
+#define Com_2_OperationDelay  50000//500000
 #define TempDefBetCom1andCom2 2
 long PreMillis1 = 0;
 long PreMillis2 = 0;
@@ -46,6 +46,17 @@ void Operation()
 {
   check_Input_Output_temp_def();
 
+  if(resetTimerFlag1)
+  {
+    PreMillis1 = millis(); // reset the time counter.
+    resetTimerFlag1 =! resetTimerFlag1;
+  }
+  if(resetTimerFlag2)
+  {
+    PreMillis2 = millis(); // reset the time counter.
+    resetTimerFlag2 =! resetTimerFlag2;
+  }
+  
   // comp. 1
   if ((Thermister1() <= SetPoint) || anyAlarm || anyAlarm1)         //if we reached to the set point turn off the comperssor or there are any alarms
   {

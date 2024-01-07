@@ -29,13 +29,14 @@ void ISR_init()
 // Interrupt service routine for pin change interrupt group PCINT16-23
 ISR(PCINT2_vect)
 {
-  if(!digitalRead(0) == LOW || !digitalRead(1) || !digitalRead(2))
+  if(!digitalRead(0) || !digitalRead(1) || !digitalRead(2))
   {
     //Stop the motors
     Motor1_off();
     Motor2_off();
   }
   if(!digitalRead(0))  D0_SW_Alarm                   = HIGH;
+  else                 D0_SW_Alarm                   = LOW ;
   if(!digitalRead(1))  D1_FlowSW_Alarm               = HIGH;
   if(!digitalRead(2))  D2_PhaseSq_Alarm              = HIGH;
   
