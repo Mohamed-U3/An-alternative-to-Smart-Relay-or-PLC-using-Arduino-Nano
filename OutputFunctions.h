@@ -61,6 +61,7 @@ void Operation()
   if ((Thermister1() <= SetPoint) || anyAlarm || anyAlarm1)         //if we reached to the set point turn off the comperssor or there are any alarms
   {
     Motor1_off();
+    PreMillis1 = millis(); // reset the time counter.
   }
   else if ((millis() - PreMillis1) >= Com_1_OperationDelay)   // check if the OperationDelay time is out.
   {
@@ -74,6 +75,7 @@ void Operation()
   if (Thermister1() <= (SetPoint + TempDefBetCom1andCom2) || anyAlarm || anyAlarm2)       //if we reached to the set point turn off the comperssor or there are any alarms
   {
     Motor2_off();
+    PreMillis2 = millis(); // reset the time counter.
   }
   else if ((millis() - PreMillis2) >= Com_2_OperationDelay)   // check if the OperationDelay time is out.
   {
