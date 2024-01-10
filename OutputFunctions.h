@@ -6,6 +6,7 @@
 #define Com_1_OperationDelay  30000//300000
 #define Com_2_OperationDelay  50000//500000
 #define TempDefBetCom1andCom2 2
+
 long PreMillis1 = 0;
 long PreMillis2 = 0;
 
@@ -41,6 +42,17 @@ void Motor2_off()
   digitalWrite(Motor2_pin, LOW);
 }
 
+String GetMotor1_status()
+{
+  if(digitalRead(Motor1_pin)) return "ON ";
+  else                        return "OFF";
+}
+
+String GetMotor2_status()
+{
+  if(digitalRead(Motor2_pin)) return "ON ";
+  else                        return "OFF";
+}
 
 void Operation()
 {

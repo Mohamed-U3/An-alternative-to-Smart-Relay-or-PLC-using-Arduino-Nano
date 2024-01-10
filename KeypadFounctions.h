@@ -141,7 +141,7 @@ void btnNONEFunction()            //IF none button is clicked
     if ((millis() - prevMillis >= 50))  // refresh screen
     {
       MainScreen(); //refresh main mainscreen
-      static long prevMillis = millis();
+      prevMillis = millis();
     }
     
     if (isBacklightOn && (currentMillis - previousMillis >= interval))  // Turn Off LCD Backlight

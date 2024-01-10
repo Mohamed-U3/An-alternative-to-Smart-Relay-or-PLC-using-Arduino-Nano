@@ -4,6 +4,7 @@
 #include "TempSensor.h"
 #include "GPIOInputChickFounction.h"
 
+
 #define MainInActive_Num     0
 #define MainScreen_Num       1
 #define InternalScreen0_Num  10
@@ -39,6 +40,10 @@ bool isBacklightOn = true;
 //Decliration of the Founction Because ScreenAlarm() is using it
 void InternalScreen4();
 void MainScreen();
+
+//declaration of Functions
+String GetMotor1_status();
+String GetMotor2_status();
 
 void ScreenInit()
 {
@@ -126,26 +131,63 @@ void ScreenAlarm()   //function that called when user resets alarms
 
 //Main Menu Start--------------------------
 void MainScreen()
-{
-  isMainMenu = true;
-  ScreenNumber = MainScreen_Num;
-//  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print(F("--------Menu--------"));
-  if(anyAlarm || anyAlarm1 || anyAlarm2)
+{  
+  if(ScreenNumber == MainScreen_Num) //dynamics words to be printed
   {
+    lcd.setCursor(11, 0);
+    if(digitalRead(0) == HIGH)
+    lcd.print("ON ");      //there will be (SW. OFF - SW. ON - Alarm) in here.
+    else
+    lcd.print("OFF");      //there will be (SW. OFF - SW. ON - Alarm) in here.
+    lcd.setCursor(14, 1);
+    lcd.print(Thermister1());
+    lcd.setCursor(14, 2);
+    lcd.print(Thermister2());
+    lcd.setCursor(14, 3);
+    lcd.print(SetPoint);
+  }
+  else //Static Words to be printed once
+  {
+    lcd.setCursor(0, 0);
+    lcd.print(F("Unit Mode:          "));      
     lcd.setCursor(0, 1);
-    lcd.print(F("   Alarm            "));
+    lcd.print(F("In Water Temp:     C"));
+    lcd.setCursor(0, 2);
+    lcd.print(F("Out Wter Temp:     C"));
+    lcd.setCursor(0, 3);
+    lcd.print(F("setPoint Temp:     C"));
+  }  
+  
+  if(anyAlarm || anyAlarm1 || anyAlarm2) //Alram Case
+  {
+    static long prevMillis = 0;
+    static bool togleVal = HIGH;
+    
+    if ((millis() - prevMillis >= 700))  // Toggle the value every 700ms
+    {
+      togleVal = !togleVal;
+      prevMillis = millis();
+    }
+    
+    if(togleVal) //the Alarm word toggles every 700ms as the last if statement sets.
+    {
+      lcd.setCursor(15, 0);
+      lcd.print(F("Alarm"));
+    }
+    else
+    {
+      lcd.setCursor(15, 0);
+      lcd.print(F("     "));
+    }    
   }
   else
   {
-    lcd.setCursor(0, 1);
-    lcd.print(F("                    "));
+    lcd.setCursor(15, 0);
+    lcd.print(F("     "));
   }
-  lcd.setCursor(0, 2);
-  lcd.print(F("Time: 11:11         "));
-  lcd.setCursor(0, 3);
-  lcd.print(F("Date: 17.12.2023    "));
+
+  isMainMenu = true;
+  ScreenNumber = MainScreen_Num;
 
 //  previousMillis = millis();
   isPagePrinted = 0;
@@ -171,7 +213,7 @@ void InternalScreen0()
   lcd.setCursor(0, 2);
   lcd.print(F("    Settings        "));
   lcd.setCursor(0, 3);
-  lcd.print(F("    Digital Inputs  "));
+  lcd.print(F("    Digital I/O     "));
 
   isPagePrinted = 0;
   PageNumber    = 1;
@@ -193,7 +235,7 @@ void InternalScreen1()
   lcd.setCursor(0, 2);
   lcd.print(F("--> Settings        "));
   lcd.setCursor(0, 3);
-  lcd.print(F("    Digital Inputs  "));
+  lcd.print(F("    Digital I/O     "));
 
   isPagePrinted = 0;
   PageNumber    = 1;
@@ -215,7 +257,7 @@ void InternalScreen2()
   lcd.setCursor(0, 2);
   lcd.print(F("    Settings        "));
   lcd.setCursor(0, 3);
-  lcd.print(F("--> Digital Inputs  "));
+  lcd.print(F("--> Digital I/O     "));
 
   isPagePrinted = 0;
   PageNumber    = 1;
@@ -234,7 +276,7 @@ void InternalScreen3()
   lcd.setCursor(0, 1);
   lcd.print(F("    Settings        "));
   lcd.setCursor(0, 2);
-  lcd.print(F("    Digital Inputs  "));
+  lcd.print(F("    Digital I/O     "));
   lcd.setCursor(0, 3);
   lcd.print(F("--> Alarms          "));
 
@@ -253,7 +295,7 @@ void InternalScreen4()
   lcd.setCursor(0, 0);
   lcd.print(F("--------Menu--------"));
   lcd.setCursor(0, 1);
-  lcd.print(F("    Digital Inputs  "));
+  lcd.print(F("    Digital I/O     "));
   lcd.setCursor(0, 2);
   lcd.print(F("    Alarms          "));
   lcd.setCursor(0, 3);
@@ -299,7 +341,7 @@ void SubScreen0()
   lcd.setCursor(0, 0);
   lcd.print(F("<<-----Status----->>"));            //-------- ====== Status ====== -------
   
-  PageLimit = 2;
+  PageLimit = 3;
   if(PageNumber == 1)
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -366,20 +408,30 @@ void SubScreen0()
   }
   else if(PageNumber == 3)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
-      lcd.setCursor(4, 0);
+      lcd.setCursor(2, 0);
       lcd.print(PageNumber);
-      
+
+      lcd.setCursor(12, 1);
+      lcd.print(GetMotor1_status());
+     
+      lcd.setCursor(12, 2);
+      lcd.print(GetMotor2_status());
+
+//      lcd.setCursor(6, 3);
+//      lcd.print();
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("Compresor1:         "));
+      
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
+      lcd.print(F("Compresor2:         "));
+      
       lcd.setCursor(0, 3);
       lcd.print(F("                    "));
       
@@ -503,12 +555,12 @@ void SubScreen2()
   isMainMenu = false;
   ScreenNumber = SubScreen2_Num;
   lcd.setCursor(0, 0);
-  lcd.print(F("<<--Digital Inputs>>"));            //-------- ====== Digital Inputs ====== -------
+  lcd.print(F("<<--Digital I/O   >>"));            //-------- ====== Digital Inputs ====== -------
 
-  PageLimit = 3;
+  PageLimit = 4;
   if(PageNumber == 1)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
@@ -541,7 +593,7 @@ void SubScreen2()
   }
   else if(PageNumber == 2)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
@@ -580,7 +632,7 @@ void SubScreen2()
   }
   else if(PageNumber == 3)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
@@ -612,6 +664,38 @@ void SubScreen2()
       
       lcd.setCursor(0, 3);
       lcd.print(F("OilP1:    OilP2:    "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 4)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(2, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(12, 1);
+      lcd.print(GetMotor1_status());
+     
+      lcd.setCursor(12, 2);
+      lcd.print(GetMotor2_status());
+
+//      lcd.setCursor(6, 3);
+//      lcd.print();
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("Compresor1:         "));
+      
+      lcd.setCursor(0, 2);
+      lcd.print(F("Compresor2:         "));
+      
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
       
       isPagePrinted = PageNumber;
     }
