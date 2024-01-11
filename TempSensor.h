@@ -14,8 +14,8 @@ float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
 signed char sensorOffset1 = 0;
 signed char sensorOffset2 = 0;
-String Temp_Alarm_reason1 = "Empty";
-String Temp_Alarm_reason2 = "Empty";
+extern String Temp_Alarm_reason1 = "Empty";
+extern String Temp_Alarm_reason2 = "Empty";
 
 
 void Thermister_init()

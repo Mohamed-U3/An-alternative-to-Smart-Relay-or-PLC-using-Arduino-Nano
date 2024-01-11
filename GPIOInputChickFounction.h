@@ -1,6 +1,8 @@
 #ifndef GPIOInputChickFounction_H
 #define GPIOInputChickFounction_H
 
+#include "EEPROMLibrary.h"
+#include "TempSensor.h"
 
 /* ==================================================
  *  List of Founction used to chick on each input pin
@@ -26,6 +28,8 @@
     D14_OilPressure2()
   ====================================================
  */
+extern String Temp_Alarm_reason1;
+extern String Temp_Alarm_reason2;
 
 bool D0_SW_Alarm                    = LOW;
 bool D1_FlowSW_Alarm                = LOW;
@@ -253,7 +257,126 @@ void Alarm_sum()
               D12_OverLoadCFM2_Alarm        ||
               D13_MotorProtector2_Alarm     ||
               D14_OilPressure2_Alarm        ;
-              
+
+  static bool Last_D1_FlowSW_Alarm               = LOW;
+  static bool Last_D2_PhaseSq_Alarm              = LOW;
+  static bool Last_temperature_difference_Alarm  = LOW;
+  static bool Last_D3_HighPressure1_Alarm        = LOW;
+  static bool Last_D4_LowPressure1_Alarm         = LOW;
+  static bool Last_D5_OverLoadComperssor1_Alarm  = LOW;
+  static bool Last_D6_OverLoadCFM1_Alarm         = LOW;
+  static bool Last_D7_MotorProtector1_Alarm      = LOW;
+  static bool Last_D8_OilPressure1_Alarm         = LOW;
+  static bool Last_D9_HighPressure2_Alarm        = LOW;
+  static bool Last_D10_LowPressure2_Alarm        = LOW;
+  static bool Last_D11_OverLoadComperssor2_Alarm = LOW;
+  static bool Last_D12_OverLoadCFM2_Alarm        = LOW;
+  static bool Last_D13_MotorProtector2_Alarm     = LOW;
+  static bool Last_D14_OilPressure2_Alarm        = LOW;
+  
+  if(Last_D1_FlowSW_Alarm != D1_FlowSW_Alarm)
+  {
+    EEPROM.put(bool_D1_FlowSW_Alarm_ADDRESS,                D1_FlowSW_Alarm);
+    Last_D1_FlowSW_Alarm = D1_FlowSW_Alarm;
+  }
+  if(Last_D2_PhaseSq_Alarm != D2_PhaseSq_Alarm)
+  {
+    EEPROM.put(bool_D2_PhaseSq_Alarm_ADDRESS,               D2_PhaseSq_Alarm);
+    Last_D2_PhaseSq_Alarm = D2_PhaseSq_Alarm;
+  }
+  if(Last_temperature_difference_Alarm != temperature_difference_Alarm)
+  {
+    EEPROM.put(bool_temperature_difference_Alarm_ADDRESS,   temperature_difference_Alarm);
+    writeStringToEEPROM(String_Temp_Alarm_reason1_ADDRESS,  Temp_Alarm_reason1);
+    writeStringToEEPROM(String_Temp_Alarm_reason2_ADDRESS,  Temp_Alarm_reason2);
+    Last_temperature_difference_Alarm = temperature_difference_Alarm;
+  }
+
+// comp1
+  if(Last_D3_HighPressure1_Alarm != D3_HighPressure1_Alarm)
+  {
+    EEPROM.put(bool_D3_HighPressure1_Alarm_ADDRESS,         D3_HighPressure1_Alarm);
+    Last_D3_HighPressure1_Alarm = D3_HighPressure1_Alarm;
+  }
+  if(Last_D4_LowPressure1_Alarm != D4_LowPressure1_Alarm)
+  {
+    EEPROM.put(bool_D4_LowPressure1_Alarm_ADDRESS,         D4_LowPressure1_Alarm);
+    Last_D4_LowPressure1_Alarm = D4_LowPressure1_Alarm;
+  }
+  if(Last_D5_OverLoadComperssor1_Alarm != D5_OverLoadComperssor1_Alarm)
+  {
+    EEPROM.put(bool_D5_OverLoadComperssor1_Alarm_ADDRESS,         D5_OverLoadComperssor1_Alarm);
+    Last_D5_OverLoadComperssor1_Alarm = D5_OverLoadComperssor1_Alarm;
+  }
+  if(Last_D6_OverLoadCFM1_Alarm != D6_OverLoadCFM1_Alarm)
+  {
+    EEPROM.put(bool_D6_OverLoadCFM1_Alarm_ADDRESS,          D6_OverLoadCFM1_Alarm);
+    Last_D6_OverLoadCFM1_Alarm = D6_OverLoadCFM1_Alarm;
+  }
+  if(Last_D7_MotorProtector1_Alarm != D7_MotorProtector1_Alarm)
+  {
+    EEPROM.put(bool_D7_MotorProtector1_Alarm_ADDRESS,       D7_MotorProtector1_Alarm);
+    Last_D7_MotorProtector1_Alarm = D7_MotorProtector1_Alarm;
+  }
+  if(Last_D8_OilPressure1_Alarm != D8_OilPressure1_Alarm)
+  {
+    EEPROM.put(bool_D8_OilPressure1_Alarm_ADDRESS,          D8_OilPressure1_Alarm);
+    Last_D8_OilPressure1_Alarm = D8_OilPressure1_Alarm;
+  }
+
+  //comp2
+  if(Last_D9_HighPressure2_Alarm != D9_HighPressure2_Alarm)
+  {
+    EEPROM.put(bool_D9_HighPressure2_Alarm_ADDRESS,         D9_HighPressure2_Alarm);
+    Last_D9_HighPressure2_Alarm = D9_HighPressure2_Alarm;
+  }
+  if(Last_D10_LowPressure2_Alarm != D10_LowPressure2_Alarm)
+  {
+    EEPROM.put(bool_D10_LowPressure2_Alarm_ADDRESS,         D10_LowPressure2_Alarm);
+    Last_D10_LowPressure2_Alarm = D10_LowPressure2_Alarm;
+  }
+  if(Last_D11_OverLoadComperssor2_Alarm != D11_OverLoadComperssor2_Alarm)
+  {
+    EEPROM.put(bool_D11_OverLoadComperssor2_Alarm_ADDRESS,  D11_OverLoadComperssor2_Alarm);
+    Last_D11_OverLoadComperssor2_Alarm = D11_OverLoadComperssor2_Alarm;
+  }
+  if(Last_D12_OverLoadCFM2_Alarm != D12_OverLoadCFM2_Alarm)
+  {
+    EEPROM.put(bool_D12_OverLoadCFM2_Alarm_ADDRESS,         D12_OverLoadCFM2_Alarm);
+    Last_D12_OverLoadCFM2_Alarm = D12_OverLoadCFM2_Alarm;
+  }
+  if(Last_D13_MotorProtector2_Alarm != D13_MotorProtector2_Alarm)
+  {
+    EEPROM.put(bool_D13_MotorProtector2_Alarm_ADDRESS,      D13_MotorProtector2_Alarm);
+    Last_D13_MotorProtector2_Alarm = D13_MotorProtector2_Alarm;
+  }
+  if(Last_D14_OilPressure2_Alarm != D14_OilPressure2_Alarm)
+  {
+    EEPROM.put(bool_D14_OilPressure2_Alarm_ADDRESS,         D14_OilPressure2_Alarm);
+    Last_D14_OilPressure2_Alarm = D14_OilPressure2_Alarm;
+  }
+}
+
+void Alarms_init()
+{
+  EEPROM.get(bool_D1_FlowSW_Alarm_ADDRESS,                D1_FlowSW_Alarm);
+  EEPROM.get(bool_D2_PhaseSq_Alarm_ADDRESS,               D2_PhaseSq_Alarm);
+  EEPROM.get(bool_D3_HighPressure1_Alarm_ADDRESS,         D3_HighPressure1_Alarm);
+  EEPROM.get(bool_D4_LowPressure1_Alarm_ADDRESS,          D4_LowPressure1_Alarm);
+  EEPROM.get(bool_D5_OverLoadComperssor1_Alarm_ADDRESS,   D5_OverLoadComperssor1_Alarm);
+  EEPROM.get(bool_D6_OverLoadCFM1_Alarm_ADDRESS,          D6_OverLoadCFM1_Alarm);
+  EEPROM.get(bool_D7_MotorProtector1_Alarm_ADDRESS,       D7_MotorProtector1_Alarm);
+  EEPROM.get(bool_D8_OilPressure1_Alarm_ADDRESS,          D8_OilPressure1_Alarm);
+  EEPROM.get(bool_D9_HighPressure2_Alarm_ADDRESS,         D9_HighPressure2_Alarm);
+  EEPROM.get(bool_D10_LowPressure2_Alarm_ADDRESS,         D10_LowPressure2_Alarm);
+  EEPROM.get(bool_D11_OverLoadComperssor2_Alarm_ADDRESS,  D11_OverLoadComperssor2_Alarm);
+  EEPROM.get(bool_D12_OverLoadCFM2_Alarm_ADDRESS,         D12_OverLoadCFM2_Alarm);
+  EEPROM.get(bool_D13_MotorProtector2_Alarm_ADDRESS,      D13_MotorProtector2_Alarm);
+  EEPROM.get(bool_D14_OilPressure2_Alarm_ADDRESS,         D14_OilPressure2_Alarm);
+  EEPROM.get(bool_temperature_difference_Alarm_ADDRESS,   temperature_difference_Alarm);
+
+  Temp_Alarm_reason1 = readStringFromEEPROM(String_Temp_Alarm_reason1_ADDRESS);
+  Temp_Alarm_reason2 = readStringFromEEPROM(String_Temp_Alarm_reason2_ADDRESS);
 }
 
 #endif

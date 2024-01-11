@@ -15,6 +15,7 @@ void setup()
   Motors_init();
   ScreenInit();
   Thermister_init();
+  Alarms_init();
   //GPIO_init();
   
   delay(1000);
@@ -23,8 +24,6 @@ void setup()
 
 void loop()
 {
-  //EEPROM.get(eeAddress, f);
-  //EEPROM.update(address, val);
   Alarm_sum();
 
   Operation();

@@ -780,7 +780,7 @@ void SubScreen3()
   PageLimit = 4;
   if(PageNumber == 1)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
@@ -813,7 +813,7 @@ void SubScreen3()
   }
   else if(PageNumber == 2)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
@@ -852,7 +852,7 @@ void SubScreen3()
   }
   else if(PageNumber == 3)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
@@ -903,6 +903,8 @@ void SubScreen3()
 
       lcd.setCursor(0, 3);
       lcd.print(Temp_Alarm_reason2);
+      Serial.println(Temp_Alarm_reason1);
+      Serial.println(Temp_Alarm_reason2);
     }
     else                           //for the statics in the page
     {
