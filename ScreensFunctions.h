@@ -163,13 +163,13 @@ void MainScreen()
     static long prevMillis = 0;
     static bool togleVal = HIGH;
     
-    if ((millis() - prevMillis >= 700))  // Toggle the value every 700ms
+    if ((millis() - prevMillis >= 500))  // Toggle the value every 700ms
     {
       togleVal = !togleVal;
       prevMillis = millis();
     }
     
-    if(togleVal) //the Alarm word toggles every 700ms as the last if statement sets.
+    if(togleVal) //the Alarm word toggles every 500ms as the last if statement sets.
     {
       lcd.setCursor(15, 0);
       lcd.print(F("Alarm"));
@@ -455,7 +455,7 @@ void SubScreen1()
   lcd.setCursor(0, 0);
   lcd.print(F("<<----Settings---->>"));            //-------- ====== Settings ====== -------
 
-  PageLimit = 2;
+  PageLimit = 4;
   if(PageNumber == 1)
   {
         if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -468,6 +468,9 @@ void SubScreen1()
 
       lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
+
+      lcd.setCursor(17, 3);
+      lcd.print(sensorOffset1);
     }
     else                           //for the statics in the page
     {
@@ -482,7 +485,7 @@ void SubScreen1()
       lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("  SensorOffset1:    "));
       
       isPagePrinted = PageNumber;
     }
@@ -499,6 +502,9 @@ void SubScreen1()
 
       lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
+
+      lcd.setCursor(17, 3);
+      lcd.print(sensorOffset1);
     }
     else                           //for the statics in the page
     {
@@ -513,7 +519,7 @@ void SubScreen1()
       lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("  SensorOffset1:    "));
 
       isPagePrinted = PageNumber;
     }
@@ -524,19 +530,73 @@ void SubScreen1()
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
-      
+
+      lcd.setCursor(12, 1);
+      lcd.print(SetPoint);
+
+      lcd.setCursor(12, 2);
+      lcd.print(SetPointDiff);
+
+      lcd.setCursor(17, 3);
+      lcd.print(sensorOffset1);
+      if (sensorOffset1 >= 0)
+      {
+        lcd.setCursor(18, 3);
+        lcd.print("  ");
+      }
     }
     else                           //for the statics in the page
     {
       lcd.clear();
-      
+
       lcd.setCursor(0, 1);
-      lcd.print(F("                    "));
+      lcd.print(F("  Setpoint:       C "));
+      lcd.setCursor(17, 1);
+      lcd.print(char(223));
       lcd.setCursor(0, 2);
-      lcd.print(F("     Empty          "));
+      lcd.print(F("  Diff:           C "));
+      lcd.setCursor(17, 2);
+      lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
-      
+      lcd.print(F("->SensorOffset1:    "));
+
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 4)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(12, 1);
+      lcd.print(SetPointDiff);
+
+      lcd.setCursor(17, 2);
+      lcd.print(sensorOffset1);
+
+      lcd.setCursor(17, 3);
+      lcd.print(sensorOffset2);
+      if (sensorOffset2 >= 0)
+      {
+        lcd.setCursor(18, 3);
+        lcd.print("  ");
+      }
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+
+      lcd.setCursor(0, 1);
+      lcd.print(F("  Diff:           C "));
+      lcd.setCursor(17, 2);
+      lcd.print(char(223));
+      lcd.setCursor(0, 2);
+      lcd.print(F("  SensorOffset1:    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F("->SensorOffset2:    "));
+
       isPagePrinted = PageNumber;
     }
   }

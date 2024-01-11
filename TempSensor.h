@@ -13,11 +13,16 @@ float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
 String Temp_Alarm_reason1 = "Empty";
 String Temp_Alarm_reason2 = "Empty";
+signed char sensorOffset1 = 0;
+signed char sensorOffset2 = 0;
 
 void Thermister_init()
 {
+//  SetPoint      = 20.00;
+//  EEPROM.put(0, SetPoint);
   pinMode(Thermister_1_pin,INPUT);
   pinMode(Thermister_2_pin,INPUT);
+  EEPROM.get(0, SetPoint);
 }
 
 double Thermister1()
@@ -32,7 +37,7 @@ double Thermister1()
   // temp = ((temp * 9.0) / 5.0 + 32.0);
   //Serial.print(analogRead(Thermister_1_pin));
   //Serial.println(" PIN Reading");
-  return temp;
+  return (temp + sensorOffset1);
 }
 
 double Thermister2()
@@ -47,7 +52,7 @@ double Thermister2()
   // temp = ((temp * 9.0) / 5.0 + 32.0);
   //Serial.print(analogRead(Thermister_2_pin));
   //Serial.println(" PIN Reading");
-  return temp;
+  return (temp + sensorOffset2);
 }
 
 void IncreaseTemp(unsigned int * page_num)
@@ -55,10 +60,19 @@ void IncreaseTemp(unsigned int * page_num)
   if(*page_num == 1)
   {
     SetPoint++;
+    EEPROM.put(0, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff++;
+  }
+  else if(*page_num == 3)
+  {
+    sensorOffset1++;
+  }
+  else if(*page_num == 4)
+  {
+    sensorOffset2++;
   }
 }
 
@@ -67,10 +81,19 @@ void DecreaseTemp(unsigned int * page_num)
   if(*page_num == 1)
   {
     SetPoint--;
+    EEPROM.put(0, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff--;
+  }
+  else if(*page_num == 3)
+  {
+    sensorOffset1--;
+  }
+  else if(*page_num == 4)
+  {
+    sensorOffset2--;
   }
 }
 

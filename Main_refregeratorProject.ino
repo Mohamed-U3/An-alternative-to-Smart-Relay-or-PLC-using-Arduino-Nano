@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 #include "KeypadFounctions.h"
 #include "OutputFunctions.h"
 #include "ScreensFunctions.h"
@@ -22,6 +23,8 @@ void setup()
 
 void loop()
 {
+  //EEPROM.get(eeAddress, f);
+  //EEPROM.update(address, val);
   Alarm_sum();
 
   Operation();
