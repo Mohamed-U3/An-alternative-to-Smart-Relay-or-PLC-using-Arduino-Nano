@@ -5,16 +5,18 @@
 
 #include "ScreensFunctions.h"
 #include "GPIOInputChickFounction.h"
+#include "EEPROMLibrary.h"
 
 #define Thermister_1_pin  A6
 #define Thermister_2_pin  A7
 
 float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
-String Temp_Alarm_reason1 = "Empty";
-String Temp_Alarm_reason2 = "Empty";
 signed char sensorOffset1 = 0;
 signed char sensorOffset2 = 0;
+String Temp_Alarm_reason1 = "Empty";
+String Temp_Alarm_reason2 = "Empty";
+
 
 void Thermister_init()
 {
@@ -22,7 +24,10 @@ void Thermister_init()
 //  EEPROM.put(0, SetPoint);
   pinMode(Thermister_1_pin,INPUT);
   pinMode(Thermister_2_pin,INPUT);
-  EEPROM.get(0, SetPoint);
+  EEPROM.get(float_SetPoint_ADDRESS, SetPoint);
+  EEPROM.get(float_SetPointDiff_ADDRESS, SetPointDiff);
+  EEPROM.get(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
+  EEPROM.get(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
 }
 
 double Thermister1()
@@ -61,20 +66,23 @@ void IncreaseTemp(unsigned int * page_num)
   {
     SetPoint++;
     if(SetPoint>30) SetPoint=30;
-    EEPROM.put(0, SetPoint);
+    EEPROM.put(float_SetPoint_ADDRESS, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff++;
     if(SetPointDiff>10) SetPointDiff=10;
+    EEPROM.put(float_SetPointDiff_ADDRESS, SetPointDiff);
   }
   else if(*page_num == 3)
   {
     sensorOffset1++;
+    EEPROM.put(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
   }
   else if(*page_num == 4)
   {
     sensorOffset2++;
+    EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
   }
 }
 
@@ -84,20 +92,23 @@ void DecreaseTemp(unsigned int * page_num)
   {
     SetPoint--;
     if(SetPoint<6) SetPoint=6;
-    EEPROM.put(0, SetPoint);
+    EEPROM.put(float_SetPoint_ADDRESS, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff--;
     if(SetPointDiff<1) SetPointDiff=1;
+    EEPROM.put(float_SetPointDiff_ADDRESS, SetPointDiff);
   }
   else if(*page_num == 3)
   {
     sensorOffset1--;
+    EEPROM.put(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
   }
   else if(*page_num == 4)
   {
     sensorOffset2--;
+    EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
   }
 }
 
