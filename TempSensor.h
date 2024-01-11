@@ -60,11 +60,13 @@ void IncreaseTemp(unsigned int * page_num)
   if(*page_num == 1)
   {
     SetPoint++;
+    if(SetPoint>30) SetPoint=30;
     EEPROM.put(0, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff++;
+    if(SetPointDiff>10) SetPointDiff=10;
   }
   else if(*page_num == 3)
   {
@@ -81,11 +83,13 @@ void DecreaseTemp(unsigned int * page_num)
   if(*page_num == 1)
   {
     SetPoint--;
+    if(SetPoint<6) SetPoint=6;
     EEPROM.put(0, SetPoint);
   }
   else if(*page_num == 2)
   {
     SetPointDiff--;
+    if(SetPointDiff<1) SetPointDiff=1;
   }
   else if(*page_num == 3)
   {
