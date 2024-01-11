@@ -9,6 +9,15 @@
 
 #define Thermister_1_pin  A6
 #define Thermister_2_pin  A7
+#define NUM_READINGS 10      // Number of readings to average
+#define READ_INTERVAL 20     // Reading interval in milliseconds 
+
+unsigned long lastReadTime1 = 0;   // Variable to store the last reading time
+double tempStack1[NUM_READINGS];   // Array to store the last 10 temperature values
+int stackIndex1 = 0;               // Index to keep track of the current position in the stack
+unsigned long lastReadTime2 = 0;   // Variable to store the last reading time
+double tempStack2[NUM_READINGS];   // Array to store the last 10 temperature values
+int stackIndex2 = 0;               // Index to keep track of the current position in the stack
 
 float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
@@ -30,6 +39,99 @@ void Thermister_init()
   EEPROM.get(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
 }
 
+//New Functions that gets the avg temperature.
+///*
+double Thermister1()
+{
+  static double averageTemp = 0.0;
+  // Check if the specified interval has passed since the last reading
+  if (millis() - lastReadTime1 >= READ_INTERVAL)
+  {
+    // Read the analog value from the thermistor
+    int rawValue = analogRead(Thermister_1_pin);
+
+    // Convert the analog value to temperature
+    double temp = log(10000.0 * ((1024.0 / rawValue) - 1));
+    temp = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * temp * temp)) * temp);
+    temp = temp - 273.15;
+
+    // Push the new temperature value onto the stack
+    tempStack1[stackIndex1] = temp;
+    stackIndex1 = (stackIndex1 + 1) % NUM_READINGS;
+
+    lastReadTime1 = millis();  // Update the last reading time
+
+    // Increment a counter to keep track of the number of readings
+    static int readingsCount = 0;
+    readingsCount++;
+
+    // Check if the specified number of readings has been reached
+    if (readingsCount == NUM_READINGS)
+    {
+      // Calculate the average temperature
+      averageTemp = 0.0;
+      for (int i = 0; i < NUM_READINGS; i++)
+      {
+        averageTemp += tempStack1[i];
+      }
+      averageTemp /= NUM_READINGS;
+
+      // Reset variables for the next set of readings
+      readingsCount = 0;
+
+      return (averageTemp + sensorOffset1);
+    }
+  }
+  return (averageTemp + sensorOffset1);
+}
+
+double Thermister2()
+{
+  static double averageTemp = 0.0;
+  // Check if the specified interval has passed since the last reading
+  if (millis() - lastReadTime2 >= READ_INTERVAL)
+  {
+    // Read the analog value from the thermistor
+    int rawValue = analogRead(Thermister_2_pin);
+
+    // Convert the analog value to temperature
+    double temp = log(10000.0 * ((1024.0 / rawValue) - 1));
+    temp = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * temp * temp)) * temp);
+    temp = temp - 273.15;
+
+    // Push the new temperature value onto the stack
+    tempStack2[stackIndex2] = temp;
+    stackIndex2 = (stackIndex2 + 1) % NUM_READINGS;
+
+    lastReadTime2 = millis();  // Update the last reading time
+
+    // Increment a counter to keep track of the number of readings
+    static int readingsCount = 0;
+    readingsCount++;
+
+    // Check if the specified number of readings has been reached
+    if (readingsCount == NUM_READINGS)
+    {
+      // Calculate the average temperature
+      averageTemp = 0.0;
+      for (int i = 0; i < NUM_READINGS; i++)
+      {
+        averageTemp += tempStack2[i];
+      }
+      averageTemp /= NUM_READINGS;
+
+      // Reset variables for the next set of readings
+      readingsCount = 0;
+
+      return (averageTemp + sensorOffset2);
+    }
+  }
+  return (averageTemp + sensorOffset2);
+}
+//*/
+
+//Old Functions
+/*
 double Thermister1()
 {
   double temp;
@@ -59,6 +161,7 @@ double Thermister2()
   //Serial.println(" PIN Reading");
   return (temp + sensorOffset2);
 }
+*/
 
 void IncreaseTemp(unsigned int * page_num)
 {

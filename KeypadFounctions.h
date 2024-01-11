@@ -28,9 +28,10 @@ int Read_Buttons()             //reading if button is clicked or not
 //  lcd.print(F("                    "));
 //  lcd.setCursor(0,1);
 //  lcd.print(F("button value: "));      //used for calibraation.
-  //lcd.print(ButtonsRead);
+//  lcd.print(ButtonsRead);
+//  Serial.println(ButtonsRead);        //used for calibraation.
   if (ButtonsRead > 800)  return btnNONE;   //the value should be 1023
-  if (ButtonsRead < 20)   return btnRIGHT;  //the value should be 0
+  if (ButtonsRead < 20)    return btnRIGHT;  //the value should be 0
   if (ButtonsRead < 80)   return btnDOWN;   //the value should be 145
   if (ButtonsRead < 160)  return btnUP;     //the value should be 330
   if (ButtonsRead < 500)  return btnLEFT;   //the value should be 506
