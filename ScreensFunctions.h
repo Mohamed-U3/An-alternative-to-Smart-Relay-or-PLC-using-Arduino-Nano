@@ -13,11 +13,13 @@
 #define InternalScreen3_Num  13
 #define InternalScreen4_Num  14
 #define InternalScreen5_Num  15
+#define InternalScrPass_Num  16
 #define SubScreen0_Num       100
 #define SubScreen1_Num       101
 #define SubScreen2_Num       102
 #define SubScreen3_Num       103
 #define SubScreen4_Num       104
+#define SubScreen5_Num       105
 
 LiquidCrystal_I2C lcd(0x27, 20, 4); // set the LCD address to 0x27 for a 16 chars and 2 line display
 
@@ -26,6 +28,15 @@ unsigned int ScreenNumber = 0;
 unsigned int PageNumber   = 1;
 unsigned int PageLimit    = 1;
 char        isPagePrinted = 0;
+
+//Password Variables
+signed char Pass1    = 0;
+signed char Pass2    = 0;
+signed char Pass3    = 0;
+//Password
+#define AcPass1          1
+#define AcPass2          2
+#define AcPass3          3
 
 //For interval, Turn Off Lcd backlight.
 unsigned long previousMillis = 0;
@@ -458,7 +469,7 @@ void SubScreen1()
   PageLimit = 4;
   if(PageNumber == 1)
   {
-        if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
@@ -1066,5 +1077,136 @@ void SubScreen4()
   Serial.print(F("SubScreen4 -> "));
   Serial.println(ScreenNumber);
 }
+//===============================================================================================
+void SubScreen5()
+{
+  isMainMenu = false;
+  ScreenNumber = SubScreen5_Num;
+  lcd.setCursor(0, 0);
+  lcd.print(F("---Enter Password---"));            //-------- ====== Password ====== -------
+
+  PageLimit = 3;
+  if(PageNumber == 1)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(1, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(5, 2);
+      lcd.print(Pass1);
+
+      lcd.setCursor(10, 2);
+      lcd.print(Pass2);
+
+      lcd.setCursor(15, 2);
+      lcd.print(Pass3);
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("     #              "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("----   --   --   ---"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 2)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(1, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(5, 2);
+      lcd.print(Pass1);
+
+      lcd.setCursor(10, 2);
+      lcd.print(Pass2);
+
+      lcd.setCursor(15, 2);
+      lcd.print(Pass3);
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("          #         "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("----   --   --   ---"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 3)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(1, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(5, 2);
+      lcd.print(Pass1);
+
+      lcd.setCursor(10, 2);
+      lcd.print(Pass2);
+
+      lcd.setCursor(15, 2);
+      lcd.print(Pass3);
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("               #    "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("----   --   --   ---"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else
+  {
+    PageNumber = 1;
+  }
+  
+  //For Debug
+  Serial.print(F("SubScreen4 -> "));
+  Serial.println(ScreenNumber);
+}
 //SUB Menu end-------------------------------
+
+//  Password Functions
+void IncreaseNum(unsigned int * page_num)
+{
+  if(*page_num == 1)      {Pass1++;  if(Pass1>9) Pass1=9;  }
+  else if(*page_num == 2) {Pass2++;  if(Pass2>9) Pass2=9;  }
+  else if(*page_num == 3) {Pass3++;  if(Pass3>9) Pass3=9;  }
+}
+
+void DecreaseNum(unsigned int * page_num)
+{
+  if(*page_num == 1)      {Pass1--;  if(Pass1<0) Pass1=0; }
+  else if(*page_num == 2) {Pass2--;  if(Pass2<0) Pass2=0; }
+  else if(*page_num == 3) {Pass3--;  if(Pass3<0) Pass3=0; }
+}
+
+bool CheckPass()
+{
+  isPagePrinted = 0;
+  PageNumber    = 1;
+  if(Pass1 == AcPass1 && Pass2 == AcPass2 && Pass3 == AcPass3) return true;
+  else return false;
+}
 #endif

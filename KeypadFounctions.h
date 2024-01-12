@@ -88,6 +88,7 @@ void btnUPFunction()              //IF up button is clicked
     //its updates StepperSteps values.
     case SubScreen0_Num:      SubScreen0();      break;
     case SubScreen1_Num:      IncreaseTemp(&PageNumber);    break;
+    case SubScreen5_Num:      IncreaseNum(&PageNumber);     break;
   }
   delay(ButtonDelay);
 }
@@ -107,6 +108,7 @@ void btnDOWNFunction()            //IF down button is clicked
     //its updates StepperSteps values.
     case SubScreen0_Num:       SubScreen0();      break;
     case SubScreen1_Num:       DecreaseTemp(&PageNumber);    break;
+    case SubScreen5_Num:       DecreaseNum(&PageNumber);     break;
   }
   delay(ButtonDelay);
 }
@@ -120,7 +122,7 @@ void btnSELECTFunction()          //IF select button is clicked
     case  MainInActive_Num:     MainScreen();      break;
     case  MainScreen_Num:       InternalScreen0(); break;
     case  InternalScreen0_Num:  SubScreen0();      break;
-    case  InternalScreen1_Num:  SubScreen1();      break;
+    case  InternalScreen1_Num:  SubScreen5();      break;
     case  InternalScreen2_Num:  SubScreen2();      break;
     case  InternalScreen3_Num:  SubScreen3();      break;
     case  InternalScreen4_Num:  SubScreen4();      break;
@@ -130,6 +132,7 @@ void btnSELECTFunction()          //IF select button is clicked
     case  SubScreen2_Num:       InternalScreen2(); break;
     case  SubScreen3_Num:       InternalScreen3(); break;
     case  SubScreen4_Num:       ScreenAlarm();     break; //when reset alarm is clicked
+    case  SubScreen5_Num:       if(CheckPass()) SubScreen1(); else InternalScreen1(); break;
   }
   delay(ButtonDelay);
 }
@@ -143,6 +146,12 @@ void btnNONEFunction()            //IF none button is clicked
     {
       MainScreen(); //refresh main mainscreen
       prevMillis = millis();
+      if(Pass1 != 0 && Pass2 != 0 && Pass3 != 0)        //reset entered password
+      {
+        Pass1 = 0;
+        Pass2 = 0;
+        Pass3 = 0;
+      }
     }
     
     if (isBacklightOn && (currentMillis - previousMillis >= interval))  // Turn Off LCD Backlight
@@ -168,6 +177,7 @@ void btnNONEFunction()            //IF none button is clicked
     case SubScreen2_Num: SubScreen2(); break;
     case SubScreen3_Num: SubScreen3(); break;
     case SubScreen4_Num: SubScreen4(); break;
+    case SubScreen5_Num: SubScreen5(); break;
   }
 }
 
