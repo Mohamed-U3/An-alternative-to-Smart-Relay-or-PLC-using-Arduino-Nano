@@ -617,7 +617,7 @@ void SubScreen2()
   lcd.setCursor(0, 0);
   lcd.print(F("<<--Digital I/O   >>"));            //-------- ====== Digital Inputs ====== -------
 
-  PageLimit = 4;
+  PageLimit = 6;
   if(PageNumber == 1)
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -625,13 +625,13 @@ void SubScreen2()
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(5, 1);
+      lcd.setCursor(15, 1);
       lcd.print(D0_SW());
       
-      lcd.setCursor(8, 2);
+      lcd.setCursor(15, 2);
       lcd.print(D1_FlowSW());
 
-      lcd.setCursor(9, 3);
+      lcd.setCursor(15, 3);
       lcd.print(D2_PhaseSq());
     }
     else                           //for the statics in the page
@@ -639,13 +639,13 @@ void SubScreen2()
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("SW1:                "));
+      lcd.print(F("ID1 SW on/off:      "));
       
       lcd.setCursor(0, 2);
-      lcd.print(F("FolwSW:             "));
+      lcd.print(F("ID2 FlowSW:         "));
       
       lcd.setCursor(0, 3);
-      lcd.print(F("PhaseSq:            "));
+      lcd.print(F("ID3 Ph.Seq:         "));
       
       
       isPagePrinted = PageNumber;
@@ -659,33 +659,27 @@ void SubScreen2()
       lcd.print(PageNumber);
 
       
-      lcd.setCursor(5, 1);
-      lcd.print(D3_HighPressure1());
       lcd.setCursor(15, 1);
-      lcd.print(D9_HighPressure2());
+      lcd.print(D3_HighPressure1());
       
-      lcd.setCursor(5, 2);
-      lcd.print(D4_LowPressure1());
       lcd.setCursor(15, 2);
-      lcd.print(D10_LowPressure2());
-
-      lcd.setCursor(6, 3);
+      lcd.print(D4_LowPressure1());
+      
+      lcd.setCursor(15, 3);
       lcd.print(D5_OverLoadComperssor1());
-      lcd.setCursor(16, 3);
-      lcd.print(D11_OverLoadComperssor2());
     }
     else                           //for the statics in the page
     {
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("HP1:      HP2:      "));
+      lcd.print(F("ID4 HP1:            "));
       
       lcd.setCursor(0, 2);
-      lcd.print(F("LP1:      LP2:      "));
+      lcd.print(F("ID5 LP1:            "));
       
       lcd.setCursor(0, 3);
-      lcd.print(F("OLC1:     OLC2:     "));
+      lcd.print(F("ID6 OLC1:           "));
       
       isPagePrinted = PageNumber;
     }
@@ -697,19 +691,77 @@ void SubScreen2()
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(7, 1);
+      lcd.setCursor(15, 1);
+      lcd.print(D9_HighPressure2());
+      
+      lcd.setCursor(15, 2);
+      lcd.print(D10_LowPressure2());
+
+      lcd.setCursor(15, 3);
+      lcd.print(D11_OverLoadComperssor2());
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("ID10 HP2:           "));
+      
+      lcd.setCursor(0, 2);
+      lcd.print(F("ID11 LP2:           "));
+      
+      lcd.setCursor(0, 3);
+      lcd.print(F("ID12 OLC2:          "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 4)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(2, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(15, 1);
       lcd.print(D6_OverLoadCFM1());
-      lcd.setCursor(17, 1);
+      
+      lcd.setCursor(15, 2);
+      lcd.print(D7_MotorProtector1());
+
+      lcd.setCursor(15, 3);
+      lcd.print(D8_OilPressure1());
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+      
+      lcd.setCursor(0, 1);
+      lcd.print(F("ID7 OLCFM1:         "));
+      
+      lcd.setCursor(0, 2);
+      lcd.print(F("ID8 MP1:            "));
+      
+      lcd.setCursor(0, 3);
+      lcd.print(F("ID9 Oil.P1:         "));
+      
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 5)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(2, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(15, 1);
       lcd.print(D12_OverLoadCFM2());
       
-      lcd.setCursor(5, 2);
-      lcd.print(D7_MotorProtector1());
       lcd.setCursor(15, 2);
       lcd.print(D13_MotorProtector2());
 
-      lcd.setCursor(6, 3);
-      lcd.print(D8_OilPressure1());
-      lcd.setCursor(16, 3);
+      lcd.setCursor(15, 3);
       lcd.print(D14_OilPressure2());
     }
     else                           //for the statics in the page
@@ -717,18 +769,18 @@ void SubScreen2()
       lcd.clear();
       
       lcd.setCursor(0, 1);
-      lcd.print(F("OLCFM1:   OLCFM2:   "));
+      lcd.print(F("ID13 OLCFM2:        "));
       
       lcd.setCursor(0, 2);
-      lcd.print(F("MP1:      MP2:      "));
+      lcd.print(F("ID14 MP2:           "));
       
       lcd.setCursor(0, 3);
-      lcd.print(F("OilP1:    OilP2:    "));
+      lcd.print(F("ID15 OilP2:         "));
       
       isPagePrinted = PageNumber;
     }
   }
-  else if(PageNumber == 4)
+  else if(PageNumber == 6)
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
     {
@@ -785,10 +837,10 @@ void SubScreen3()
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(5, 1);
+      lcd.setCursor(9, 1);
       lcd.print(D0_SW_Alarm);
       
-      lcd.setCursor(8, 2);
+      lcd.setCursor(9, 2);
       lcd.print(D1_FlowSW_Alarm);
 
       lcd.setCursor(9, 3);
@@ -819,19 +871,19 @@ void SubScreen3()
       lcd.print(PageNumber);
 
       
-      lcd.setCursor(5, 1);
+      lcd.setCursor(8, 1);
       lcd.print(D3_HighPressure1_Alarm);
-      lcd.setCursor(15, 1);
+      lcd.setCursor(18, 1);
       lcd.print(D9_HighPressure2_Alarm);
       
-      lcd.setCursor(5, 2);
+      lcd.setCursor(8, 2);
       lcd.print(D4_LowPressure1_Alarm);
-      lcd.setCursor(15, 2);
+      lcd.setCursor(18, 2);
       lcd.print(D10_LowPressure2_Alarm);
 
-      lcd.setCursor(6, 3);
+      lcd.setCursor(8, 3);
       lcd.print(D5_OverLoadComperssor1_Alarm);
-      lcd.setCursor(16, 3);
+      lcd.setCursor(18, 3);
       lcd.print(D11_OverLoadComperssor2_Alarm);
     }
     else                           //for the statics in the page
@@ -857,19 +909,19 @@ void SubScreen3()
       lcd.setCursor(4, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(7, 1);
+      lcd.setCursor(8, 1);
       lcd.print(D6_OverLoadCFM1_Alarm);
-      lcd.setCursor(17, 1);
+      lcd.setCursor(18, 1);
       lcd.print(D12_OverLoadCFM2_Alarm);
       
-      lcd.setCursor(5, 2);
+      lcd.setCursor(8, 2);
       lcd.print(D7_MotorProtector1_Alarm);
-      lcd.setCursor(15, 2);
+      lcd.setCursor(18, 2);
       lcd.print(D13_MotorProtector2_Alarm);
 
-      lcd.setCursor(6, 3);
+      lcd.setCursor(8, 3);
       lcd.print(D8_OilPressure1_Alarm);
-      lcd.setCursor(16, 3);
+      lcd.setCursor(18, 3);
       lcd.print(D14_OilPressure2_Alarm);
     }
     else                           //for the statics in the page

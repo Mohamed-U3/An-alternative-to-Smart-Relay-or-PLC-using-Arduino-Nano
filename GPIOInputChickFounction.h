@@ -64,152 +64,152 @@ String D0_SW()
   if(digitalRead(0) == HIGH)
   {
     D0_SW_Alarm = LOW;
-    return "OK ";
+    return "ON ";
   }
   else
   {
     D0_SW_Alarm = HIGH;
-    return "Err";
+    return "OFF";
   }
 }
 
 String D1_FlowSW()
 {
-  if(digitalRead(1) == HIGH) return "OK ";
+  if(digitalRead(1) == HIGH) return "OK   ";
   else
   {
     D1_FlowSW_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D2_PhaseSq()
 {
-  if(digitalRead(2) == HIGH) return "OK ";
+  if(digitalRead(2) == HIGH) return "OK   ";
   else
   {
     D2_PhaseSq_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D3_HighPressure1()
 {
-  if(digitalRead(3) == HIGH) return "OK ";
+  if(digitalRead(3) == HIGH) return "OK   ";
   else
   {
     D3_HighPressure1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D4_LowPressure1()
 {
-  if(digitalRead(4) == HIGH) return "OK ";
+  if(digitalRead(4) == HIGH) return "OK   ";
   else
   {
     D4_LowPressure1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D5_OverLoadComperssor1()
 {
-  if(digitalRead(5) == HIGH) return "OK ";
+  if(digitalRead(5) == HIGH) return "OK   ";
   else
   {
     D5_OverLoadComperssor1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D6_OverLoadCFM1()
 {
-  if(digitalRead(6) == HIGH) return "OK ";
+  if(digitalRead(6) == HIGH) return "OK   ";
   else
   {
     D6_OverLoadCFM1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D7_MotorProtector1()
 {
-  if(digitalRead(7) == HIGH) return "OK ";
+  if(digitalRead(7) == HIGH) return "OK   ";
   else
   {
     D7_MotorProtector1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D8_OilPressure1()
 {
-  if(digitalRead(8) == HIGH) return "OK ";
+  if(digitalRead(8) == HIGH) return "OK   ";
   else
   {
     D8_OilPressure1_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D9_HighPressure2()
 {
-  if(digitalRead(9) == HIGH) return "OK ";
+  if(digitalRead(9) == HIGH) return "OK   ";
   else
   {
     D9_HighPressure2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D10_LowPressure2()
 {
-  if(digitalRead(10) == HIGH) return "OK ";
+  if(digitalRead(10) == HIGH) return "OK   ";
   else
   {
     D10_LowPressure2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D11_OverLoadComperssor2()
 {
-  if(digitalRead(11) == HIGH) return "OK ";
+  if(digitalRead(11) == HIGH) return "OK   ";
   else
   {
     D11_OverLoadComperssor2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D12_OverLoadCFM2()
 {
-  if(digitalRead(12) == HIGH) return "OK ";
+  if(digitalRead(12) == HIGH) return "OK   ";
   else
   {
     D12_OverLoadCFM2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D13_MotorProtector2()
 {
-  if(digitalRead(13) == HIGH) return "OK ";
+  if(digitalRead(13) == HIGH) return "OK   ";
   else
   {
     D13_MotorProtector2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
 String D14_OilPressure2()
 {
-  if(digitalRead(14) == HIGH) return "OK ";
+  if(digitalRead(14) == HIGH) return "OK   ";
   else
   {
     D14_OilPressure2_Alarm = HIGH;
-    return "Err";
+    return "Alarm";
   }
 }
 
