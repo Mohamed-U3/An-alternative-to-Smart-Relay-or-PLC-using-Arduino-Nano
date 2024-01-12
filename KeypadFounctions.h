@@ -89,6 +89,7 @@ void btnUPFunction()              //IF up button is clicked
     case SubScreen0_Num:      SubScreen0();      break;
     case SubScreen1_Num:      IncreaseTemp(&PageNumber);    break;
     case SubScreen5_Num:      IncreaseNum(&PageNumber);     break;
+    case SubScreen6_Num:      IncreaseOffset(&PageNumber);  break;
   }
   delay(ButtonDelay);
 }
@@ -109,6 +110,7 @@ void btnDOWNFunction()            //IF down button is clicked
     case SubScreen0_Num:       SubScreen0();      break;
     case SubScreen1_Num:       DecreaseTemp(&PageNumber);    break;
     case SubScreen5_Num:       DecreaseNum(&PageNumber);     break;
+    case SubScreen6_Num:       DecreaseOffset(&PageNumber);  break;
   }
   delay(ButtonDelay);
 }
@@ -122,17 +124,18 @@ void btnSELECTFunction()          //IF select button is clicked
     case  MainInActive_Num:     MainScreen();      break;
     case  MainScreen_Num:       InternalScreen0(); break;
     case  InternalScreen0_Num:  SubScreen0();      break;
-    case  InternalScreen1_Num:  SubScreen5();      break;
+    case  InternalScreen1_Num:  SubScreen1();      break;
     case  InternalScreen2_Num:  SubScreen2();      break;
     case  InternalScreen3_Num:  SubScreen3();      break;
     case  InternalScreen4_Num:  SubScreen4();      break;
     case  InternalScreen5_Num:  MainScreen();      break;
     case  SubScreen0_Num:       InternalScreen0(); break;
-    case  SubScreen1_Num:       InternalScreen1(); break;
+    case  SubScreen1_Num:       if(PageNumber == 3) {isPagePrinted = 0;PageNumber    = 1; SubScreen5();} else InternalScreen1(); break;
     case  SubScreen2_Num:       InternalScreen2(); break;
     case  SubScreen3_Num:       InternalScreen3(); break;
     case  SubScreen4_Num:       ScreenAlarm();     break; //when reset alarm is clicked
-    case  SubScreen5_Num:       if(CheckPass()) SubScreen1(); else InternalScreen1(); break;
+    case  SubScreen5_Num:       if(CheckPass()) SubScreen6(); else InternalScreen1(); break;
+    case  SubScreen6_Num:       InternalScreen1(); break;
   }
   delay(ButtonDelay);
 }
@@ -178,6 +181,7 @@ void btnNONEFunction()            //IF none button is clicked
     case SubScreen3_Num: SubScreen3(); break;
     case SubScreen4_Num: SubScreen4(); break;
     case SubScreen5_Num: SubScreen5(); break;
+    case SubScreen6_Num: SubScreen6(); break;
   }
 }
 

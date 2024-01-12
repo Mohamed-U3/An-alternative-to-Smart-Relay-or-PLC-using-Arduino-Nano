@@ -20,6 +20,7 @@
 #define SubScreen3_Num       103
 #define SubScreen4_Num       104
 #define SubScreen5_Num       105
+#define SubScreen6_Num       106
 
 LiquidCrystal_I2C lcd(0x27, 20, 4); // set the LCD address to 0x27 for a 16 chars and 2 line display
 
@@ -34,9 +35,9 @@ signed char Pass1    = 0;
 signed char Pass2    = 0;
 signed char Pass3    = 0;
 //Password
-#define AcPass1          1
-#define AcPass2          2
-#define AcPass3          3
+#define AcPass1          4
+#define AcPass2          5
+#define AcPass3          1
 
 //For interval, Turn Off Lcd backlight.
 unsigned long previousMillis = 0;
@@ -466,7 +467,7 @@ void SubScreen1()
   lcd.setCursor(0, 0);
   lcd.print(F("<<----Settings---->>"));            //-------- ====== Settings ====== -------
 
-  PageLimit = 4;
+  PageLimit = 3;
   if(PageNumber == 1)
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -479,9 +480,6 @@ void SubScreen1()
 
       lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
-
-      lcd.setCursor(17, 3);
-      lcd.print(sensorOffset1);
     }
     else                           //for the statics in the page
     {
@@ -496,7 +494,7 @@ void SubScreen1()
       lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("  SensorOffset1:    "));
+      lcd.print(F("  Admin Settings    "));
       
       isPagePrinted = PageNumber;
     }
@@ -513,9 +511,6 @@ void SubScreen1()
 
       lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
-
-      lcd.setCursor(17, 3);
-      lcd.print(sensorOffset1);
     }
     else                           //for the statics in the page
     {
@@ -530,7 +525,7 @@ void SubScreen1()
       lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("  SensorOffset1:    "));
+      lcd.print(F("  Admin Settings    "));
 
       isPagePrinted = PageNumber;
     }
@@ -547,14 +542,6 @@ void SubScreen1()
 
       lcd.setCursor(12, 2);
       lcd.print(SetPointDiff);
-
-      lcd.setCursor(17, 3);
-      lcd.print(sensorOffset1);
-      if (sensorOffset1 >= 0)
-      {
-        lcd.setCursor(18, 3);
-        lcd.print("  ");
-      }
     }
     else                           //for the statics in the page
     {
@@ -569,44 +556,7 @@ void SubScreen1()
       lcd.setCursor(17, 2);
       lcd.print(char(223));
       lcd.setCursor(0, 3);
-      lcd.print(F("->SensorOffset1:    "));
-
-      isPagePrinted = PageNumber;
-    }
-  }
-  else if(PageNumber == 4)
-  {
-    if(isPagePrinted == PageNumber) //For the Dynamics in the page
-    {
-      lcd.setCursor(4, 0);
-      lcd.print(PageNumber);
-
-      lcd.setCursor(12, 1);
-      lcd.print(SetPointDiff);
-
-      lcd.setCursor(17, 2);
-      lcd.print(sensorOffset1);
-
-      lcd.setCursor(17, 3);
-      lcd.print(sensorOffset2);
-      if (sensorOffset2 >= 0)
-      {
-        lcd.setCursor(18, 3);
-        lcd.print("  ");
-      }
-    }
-    else                           //for the statics in the page
-    {
-      lcd.clear();
-
-      lcd.setCursor(0, 1);
-      lcd.print(F("  Diff:           C "));
-      lcd.setCursor(17, 2);
-      lcd.print(char(223));
-      lcd.setCursor(0, 2);
-      lcd.print(F("  SensorOffset1:    "));
-      lcd.setCursor(0, 3);
-      lcd.print(F("->SensorOffset2:    "));
+      lcd.print(F("->Admin Settings    "));
 
       isPagePrinted = PageNumber;
     }
@@ -1183,6 +1133,98 @@ void SubScreen5()
   
   //For Debug
   Serial.print(F("SubScreen4 -> "));
+  Serial.println(ScreenNumber);
+}
+//===============================================================================================
+void SubScreen6()
+{
+  isMainMenu = false;
+  ScreenNumber = SubScreen6_Num;
+  lcd.setCursor(0, 0);
+  lcd.print(F("<<-admin settings->>"));            //-------- ====== Settings ====== -------
+
+  PageLimit = 2;
+  if(PageNumber == 1)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(17, 1);
+      lcd.print(sensorOffset1);
+      if (sensorOffset1 >= 0)
+      {
+        lcd.setCursor(18, 1);
+        lcd.print("  ");
+      }
+      
+      lcd.setCursor(17, 2);
+      lcd.print(sensorOffset2);
+      if (sensorOffset2 >= 0)
+      {
+        lcd.setCursor(18, 2);
+        lcd.print("  ");
+      }
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+
+      lcd.setCursor(0, 1);
+      lcd.print(F("->SensorOffset1:    "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("  SensorOffset2:    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
+
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 2)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(17, 1);
+      lcd.print(sensorOffset1);
+      if (sensorOffset1 >= 0)
+      {
+        lcd.setCursor(18, 1);
+        lcd.print("  ");
+      }
+      
+      lcd.setCursor(17, 2);
+      lcd.print(sensorOffset2);
+      if (sensorOffset2 >= 0)
+      {
+        lcd.setCursor(18, 2);
+        lcd.print("  ");
+      }
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+
+      lcd.setCursor(0, 1);
+      lcd.print(F("  SensorOffset1:    "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("->SensorOffset2:    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F("                    "));
+
+      isPagePrinted = PageNumber;
+    }
+  }
+  else
+  {
+    PageNumber = 1;
+  }
+  
+  //For Debug
+  Serial.print(F("SubScreen1 -> "));
   Serial.println(ScreenNumber);
 }
 //SUB Menu end-------------------------------
