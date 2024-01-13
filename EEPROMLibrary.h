@@ -10,6 +10,8 @@
 #define unsigned_long_Com_1_OperationDelay_ADDRESS        (signed_char_sensorOffset2_ADDRESS          + sizeof(signed char))
 #define unsigned_long_Com_2_OperationDelay_ADDRESS        (unsigned_long_Com_1_OperationDelay_ADDRESS + sizeof(unsigned long))
 
+#define FirstTime_ADDRESS                                 (unsigned_long_Com_2_OperationDelay_ADDRESS + sizeof(unsigned long))
+
 
 /*
 #define bool_D1_FlowSW_Alarm_ADDRESS                      (signed_char_sensorOffset2_ADDRESS          + sizeof(signed char))
@@ -31,7 +33,7 @@
 
 #define String_Temp_Alarm_reason1_ADDRESS                 (bool_temperature_difference_Alarm_ADDRESS  + sizeof(bool))
 #define String_Temp_Alarm_reason2_ADDRESS                 (String_Temp_Alarm_reason1_ADDRESS          + 21)
-
+*/
 
 // Function to write a string to EEPROM
 void writeStringToEEPROM(int address, const String& data)
@@ -57,6 +59,6 @@ String readStringFromEEPROM(int address)
     }
     return result;
 }
-*/
+
 
 #endif

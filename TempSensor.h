@@ -39,6 +39,19 @@ void Thermister_init()
 //  EEPROM.put(0, SetPoint);
   pinMode(Thermister_1_pin,INPUT);
   pinMode(Thermister_2_pin,INPUT);
+  String Readings = readStringFromEEPROM(FirstTime_ADDRESS);
+
+  if(Readings != "The First Time")
+  {
+    writeStringToEEPROM(FirstTime_ADDRESS, "The First Time");
+
+    EEPROM.put(float_SetPoint_ADDRESS, 12.00);
+    EEPROM.put(float_SetPointDiff_ADDRESS, 2.00);
+    EEPROM.put(signed_char_sensorOffset1_ADDRESS, 0);
+    EEPROM.put(signed_char_sensorOffset2_ADDRESS, 0);
+    EEPROM.put(unsigned_long_Com_1_OperationDelay_ADDRESS, 150UL);
+    EEPROM.put(unsigned_long_Com_2_OperationDelay_ADDRESS, 250UL);
+  }
   EEPROM.get(float_SetPoint_ADDRESS, SetPoint);
   EEPROM.get(float_SetPointDiff_ADDRESS, SetPointDiff);
   EEPROM.get(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
