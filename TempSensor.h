@@ -49,7 +49,7 @@ void Thermister_init()
 //*
 double Thermister1()
 {
-  static double averageTemp = 0.0;
+  static double averageTemp = 22.0;
   // Check if the specified interval has passed since the last reading
   if (millis() - lastReadTime1 >= READ_INTERVAL)
   {
@@ -93,7 +93,7 @@ double Thermister1()
 
 double Thermister2()
 {
-  static double averageTemp = 0.0;
+  static double averageTemp = 20.0;
   // Check if the specified interval has passed since the last reading
   if (millis() - lastReadTime2 >= READ_INTERVAL)
   {
@@ -255,26 +255,23 @@ void DecreaseOffset(unsigned int * page_num)
 
 void check_Input_Output_temp_def()
 {
-  if(millis() >= 7000)
+  if(Thermister1() <= Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
   {
-    if(Thermister1() <= Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
-    {
-      temperature_difference_Alarm = HIGH;
-      Temp_Alarm_reason1 = "reverse flow or     ";
-      Temp_Alarm_reason2 = " sensor failure     ";
-    }
-    if(Thermister1() < 4 || Thermister2() < 4)
-    {
-      temperature_difference_Alarm = HIGH;
-      Temp_Alarm_reason1 = "Low temp or sensor  ";
-      Temp_Alarm_reason2 = " failure            ";
-    }
-    if (temperature_difference_Alarm == LOW)
-    {
-      Temp_Alarm_reason1 = "                    ";
-      Temp_Alarm_reason2 = "                    ";
-      //temperature_difference_Alarm = LOW;
-    }
+    temperature_difference_Alarm = HIGH;
+    Temp_Alarm_reason1 = "reverse flow or     ";
+    Temp_Alarm_reason2 = " sensor failure     ";
+  }
+  if(Thermister1() < 4 || Thermister2() < 4)
+  {
+    temperature_difference_Alarm = HIGH;
+    Temp_Alarm_reason1 = "Low temp or sensor  ";
+    Temp_Alarm_reason2 = " failure            ";
+  }
+  if (temperature_difference_Alarm == LOW)
+  {
+    Temp_Alarm_reason1 = "                    ";
+    Temp_Alarm_reason2 = "                    ";
+    //temperature_difference_Alarm = LOW;
   }
 }
 
