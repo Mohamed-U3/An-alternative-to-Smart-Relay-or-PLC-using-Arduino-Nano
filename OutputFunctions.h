@@ -61,7 +61,7 @@ String GetMotor2_status()
 
 void Operation()
 {
-  check_Input_Output_temp_def();
+  check_Input_Output_temp_def(2);
 
   if(resetTimerFlag1)
   {
@@ -78,7 +78,7 @@ void Operation()
   if ((Thermister1() <= SetPoint) || anyAlarm || anyAlarm1)         //if we reached to the set point turn off the comperssor or there are any alarms
   {
     Motor1_off();
-    compressor2delay = false;
+    compressor1delay = false;
     PreMillis1 = millis(); // reset the time counter.
   }
   else 
@@ -88,8 +88,10 @@ void Operation()
       if (Thermister1() >= (SetPoint + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
       {
         Motor1_on(); //the motor will not work until there is not alarms.
+        check_Input_Output_temp_def(1);
         compressor1delay = false;
       }
+      else compressor1delay = false;
       //PreMillis1 = millis(); // reset the time counter.
     }
     else compressor1delay = true;
@@ -109,8 +111,10 @@ void Operation()
       if (Thermister1() >= (SetPoint + TempDefBetCom1andCom2 + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
       {
         Motor2_on();  //the motor will not work until there is not alarms.
+        check_Input_Output_temp_def(1);
         compressor2delay = false;
       }
+      else compressor2delay = false;
       //PreMillis2 = millis(); // reset the time counter.
     }
     else compressor2delay = true;

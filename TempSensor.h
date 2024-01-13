@@ -19,6 +19,8 @@ unsigned long lastReadTime2 = 0;   // Variable to store the last reading time
 double tempStack2[NUM_READINGS];   // Array to store the last 10 temperature values
 int stackIndex2 = 0;               // Index to keep track of the current position in the stack
 
+unsigned long lastReadTime3 = 0;   // Variable to store the last reading time
+
 float SetPoint      = 22.00;
 float SetPointDiff  = 2.00;
 signed char sensorOffset1 = 0;
@@ -253,20 +255,46 @@ void DecreaseOffset(unsigned int * page_num)
   }
 }
 
-void check_Input_Output_temp_def()
+void check_Input_Output_temp_def(char Alarm)
 {
-  if(Thermister1() <= Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
+  //First Alarm Starts Here.
+  static bool arr[6] = {false,false,false,false,false,false};
+  if(Thermister1() <= Thermister2() && Alarm == 1) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
+  {
+    static char counter = 0;
+    if(counter == 0){arr[counter] = true; lastReadTime3 = millis(); counter++;}
+    if(millis() - lastReadTime3 >= (2UL*60*1000)) //every 2 minutes
+    {
+      switch (counter)
+      {
+        case 1: arr[counter] = true; counter++; break;
+        case 2: arr[counter] = true; counter++; break;
+        case 3: arr[counter] = true; counter++; break;
+        case 4: arr[counter] = true; counter++; break;
+        case 5: arr[counter] = true; counter=0; break;
+        default: counter = 0;
+      }
+
+      lastReadTime3 = millis();
+    }
+  }
+  if(arr[0] == true && arr[1] == true && arr[2] == true && arr[3] == true && arr[4] == true && arr[5] == true)
   {
     temperature_difference_Alarm = HIGH;
     Temp_Alarm_reason1 = "reverse flow or     ";
     Temp_Alarm_reason2 = " sensor failure     ";
+    for(char i = 0; i<6; i++) arr[i] = false;
   }
-  if(Thermister1() < 4 || Thermister2() < 4)
+  //First Alarm Ends Here.
+
+  //Second Alarm starts Here.
+  if((Thermister1() < 4 || Thermister2() < 4) && Alarm == 2)
   {
     temperature_difference_Alarm = HIGH;
     Temp_Alarm_reason1 = "Low temp or sensor  ";
     Temp_Alarm_reason2 = " failure            ";
   }
+  //Second Alarm Ends Here.
   if (temperature_difference_Alarm == LOW)
   {
     Temp_Alarm_reason1 = "                    ";
