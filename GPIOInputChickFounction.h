@@ -257,7 +257,7 @@ void Alarm_sum()
               D12_OverLoadCFM2_Alarm        ||
               D13_MotorProtector2_Alarm     ||
               D14_OilPressure2_Alarm        ;
-
+/*
   static bool Last_D1_FlowSW_Alarm               = LOW;
   static bool Last_D2_PhaseSq_Alarm              = LOW;
   static bool Last_temperature_difference_Alarm  = LOW;
@@ -355,10 +355,13 @@ void Alarm_sum()
     EEPROM.put(bool_D14_OilPressure2_Alarm_ADDRESS,         D14_OilPressure2_Alarm);
     Last_D14_OilPressure2_Alarm = D14_OilPressure2_Alarm;
   }
+
+  */
 }
 
 void Alarms_init()
 {
+  /*
   EEPROM.get(bool_D1_FlowSW_Alarm_ADDRESS,                D1_FlowSW_Alarm);
   EEPROM.get(bool_D2_PhaseSq_Alarm_ADDRESS,               D2_PhaseSq_Alarm);
   EEPROM.get(bool_D3_HighPressure1_Alarm_ADDRESS,         D3_HighPressure1_Alarm);
@@ -377,6 +380,7 @@ void Alarms_init()
 
   Temp_Alarm_reason1 = readStringFromEEPROM(String_Temp_Alarm_reason1_ADDRESS);
   Temp_Alarm_reason2 = readStringFromEEPROM(String_Temp_Alarm_reason2_ADDRESS);
+  */
 }
 
 #endif

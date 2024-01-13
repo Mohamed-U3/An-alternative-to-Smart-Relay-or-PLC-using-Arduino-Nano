@@ -7,6 +7,11 @@
 #define signed_char_sensorOffset1_ADDRESS                 (float_SetPointDiff_ADDRESS                 + sizeof(float))
 #define signed_char_sensorOffset2_ADDRESS                 (signed_char_sensorOffset1_ADDRESS          + sizeof(signed char))
 
+#define unsigned_long_Com_1_OperationDelay_ADDRESS        (signed_char_sensorOffset2_ADDRESS          + sizeof(signed char))
+#define unsigned_long_Com_2_OperationDelay_ADDRESS        (unsigned_long_Com_1_OperationDelay_ADDRESS + sizeof(unsigned long))
+
+
+/*
 #define bool_D1_FlowSW_Alarm_ADDRESS                      (signed_char_sensorOffset2_ADDRESS          + sizeof(signed char))
 #define bool_D2_PhaseSq_Alarm_ADDRESS                     (bool_D1_FlowSW_Alarm_ADDRESS               + sizeof(bool))
 #define bool_D3_HighPressure1_Alarm_ADDRESS               (bool_D2_PhaseSq_Alarm_ADDRESS              + sizeof(bool))
@@ -52,5 +57,6 @@ String readStringFromEEPROM(int address)
     }
     return result;
 }
+*/
 
 #endif

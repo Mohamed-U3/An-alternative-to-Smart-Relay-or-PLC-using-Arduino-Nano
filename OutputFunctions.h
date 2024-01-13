@@ -3,9 +3,14 @@
 
 #define Motor1_pin      A1
 #define Motor2_pin      A2
-#define Com_1_OperationDelay  30000//300000
-#define Com_2_OperationDelay  50000//500000
 #define TempDefBetCom1andCom2 2
+//#define Com_1_OperationDelay  3000//300000
+//#define Com_2_OperationDelay  5000//500000
+extern unsigned long Com_1_OperationDelay = 3;  //five minutes
+extern unsigned long Com_2_OperationDelay = 5;  //8.33 minutes
+
+extern bool compressor1delay = false;
+extern bool compressor2delay = false;
 
 long PreMillis1 = 0;
 long PreMillis2 = 0;
@@ -73,30 +78,42 @@ void Operation()
   if ((Thermister1() <= SetPoint) || anyAlarm || anyAlarm1)         //if we reached to the set point turn off the comperssor or there are any alarms
   {
     Motor1_off();
+    compressor2delay = false;
     PreMillis1 = millis(); // reset the time counter.
   }
-  else if ((millis() - PreMillis1) >= Com_1_OperationDelay)   // check if the OperationDelay time is out.
+  else 
   {
-    if (Thermister1() >= (SetPoint + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
+    if ((millis() - PreMillis1) >= (Com_1_OperationDelay*1000))   // check if the OperationDelay time is out.
     {
-      Motor1_on(); //the motor will not work until there is not alarms.
+      if (Thermister1() >= (SetPoint + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
+      {
+        Motor1_on(); //the motor will not work until there is not alarms.
+        compressor1delay = false;
+      }
+      //PreMillis1 = millis(); // reset the time counter.
     }
-    PreMillis1 = millis(); // reset the time counter.
+    else compressor1delay = true;
   }
   
   if (Thermister1() <= (SetPoint + TempDefBetCom1andCom2) || anyAlarm || anyAlarm2)       //if we reached to the set point turn off the comperssor or there are any alarms
   {
     Motor2_off();
+    compressor2delay = false;
     PreMillis2 = millis(); // reset the time counter.
   }
-  else if ((millis() - PreMillis2) >= Com_2_OperationDelay)   // check if the OperationDelay time is out.
+  else
   {
-    // comp. 2
-    if (Thermister1() >= (SetPoint + TempDefBetCom1andCom2 + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
+    if ((millis() - PreMillis2) >= (Com_2_OperationDelay*1000))   // check if the OperationDelay time is out.
     {
-      Motor2_on();  //the motor will not work until there is not alarms.
+      // comp. 2
+      if (Thermister1() >= (SetPoint + TempDefBetCom1andCom2 + SetPointDiff)) //if the temperature of the room is higher then the setpoint + diff turn on the comperasor so the room gets colder
+      {
+        Motor2_on();  //the motor will not work until there is not alarms.
+        compressor2delay = false;
+      }
+      //PreMillis2 = millis(); // reset the time counter.
     }
-    PreMillis2 = millis(); // reset the time counter.
+    else compressor2delay = true;
   }
 }
 #endif

@@ -4,7 +4,6 @@
 #include "TempSensor.h"
 #include "GPIOInputChickFounction.h"
 
-
 #define MainInActive_Num     0
 #define MainScreen_Num       1
 #define InternalScreen0_Num  10
@@ -48,6 +47,12 @@ bool resetTimerFlag2 = 0;
 
 bool isMainMenu = false;
 bool isBacklightOn = true;
+
+//Decliration of Variables in other file.
+extern unsigned long Com_1_OperationDelay;
+extern unsigned long Com_2_OperationDelay;
+extern bool compressor1delay;
+extern bool compressor2delay;
 
 //Decliration of the Founction Because ScreenAlarm() is using it
 void InternalScreen4();
@@ -748,14 +753,21 @@ void SubScreen2()
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(12, 1);
+      lcd.setCursor(11, 1);
       lcd.print(GetMotor1_status());
+      lcd.setCursor(15, 1);
+      if(anyAlarm ||anyAlarm1) lcd.print("Alarm");
+      else if(compressor1delay) lcd.print("Delay");
+      else lcd.print("     ");
+      
      
-      lcd.setCursor(12, 2);
+      lcd.setCursor(11, 2);
       lcd.print(GetMotor2_status());
-
-//      lcd.setCursor(6, 3);
-//      lcd.print();
+      
+      lcd.setCursor(15, 2);
+      if(anyAlarm ||anyAlarm2) lcd.print("Alarm");
+      else if(compressor2delay) lcd.print("Delay");
+      else lcd.print("     ");
     }
     else                           //for the statics in the page
     {
@@ -1141,9 +1153,9 @@ void SubScreen6()
   isMainMenu = false;
   ScreenNumber = SubScreen6_Num;
   lcd.setCursor(0, 0);
-  lcd.print(F("<<-admin settings->>"));            //-------- ====== Settings ====== -------
+  lcd.print(F("<<-admin settings->>"));            //-------- ====== Admin Settings ====== -------
 
-  PageLimit = 2;
+  PageLimit = 4;
   if(PageNumber == 1)
   {
     if(isPagePrinted == PageNumber) //For the Dynamics in the page
@@ -1166,6 +1178,9 @@ void SubScreen6()
         lcd.setCursor(18, 2);
         lcd.print("  ");
       }
+
+      lcd.setCursor(15, 3);
+      lcd.print(Com_1_OperationDelay);
     }
     else                           //for the statics in the page
     {
@@ -1176,7 +1191,7 @@ void SubScreen6()
       lcd.setCursor(0, 2);
       lcd.print(F("  SensorOffset2:    "));
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("  Timer1Delay:     s"));
 
       isPagePrinted = PageNumber;
     }
@@ -1203,6 +1218,9 @@ void SubScreen6()
         lcd.setCursor(18, 2);
         lcd.print("  ");
       }
+      
+      lcd.setCursor(15, 3);
+      lcd.print(Com_1_OperationDelay);
     }
     else                           //for the statics in the page
     {
@@ -1213,7 +1231,83 @@ void SubScreen6()
       lcd.setCursor(0, 2);
       lcd.print(F("->SensorOffset2:    "));
       lcd.setCursor(0, 3);
-      lcd.print(F("                    "));
+      lcd.print(F("  Timer1Delay:     s"));
+
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 3)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+
+      lcd.setCursor(17, 1);
+      lcd.print(sensorOffset1);
+      if (sensorOffset1 >= 0)
+      {
+        lcd.setCursor(18, 1);
+        lcd.print("  ");
+      }
+      
+      lcd.setCursor(17, 2);
+      lcd.print(sensorOffset2);
+      if (sensorOffset2 >= 0)
+      {
+        lcd.setCursor(18, 2);
+        lcd.print("  ");
+      }
+
+      lcd.setCursor(15, 3);
+      lcd.print(Com_1_OperationDelay);
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+
+      lcd.setCursor(0, 1);
+      lcd.print(F("  SensorOffset1:    "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("  SensorOffset2:    "));
+      lcd.setCursor(0, 3);
+      lcd.print(F("->Timer1Delay:     s"));
+
+      isPagePrinted = PageNumber;
+    }
+  }
+  else if(PageNumber == 4)
+  {
+    if(isPagePrinted == PageNumber) //For the Dynamics in the page
+    {
+      lcd.setCursor(4, 0);
+      lcd.print(PageNumber);
+      
+      lcd.setCursor(17, 1);
+      lcd.print(sensorOffset2);
+      if (sensorOffset2 >= 0)
+      {
+        lcd.setCursor(18, 1);
+        lcd.print("  ");
+      }
+
+      lcd.setCursor(15, 2);
+      lcd.print(Com_1_OperationDelay);
+
+      lcd.setCursor(15, 3);
+      lcd.print(Com_2_OperationDelay);
+      
+    }
+    else                           //for the statics in the page
+    {
+      lcd.clear();
+
+      lcd.setCursor(0, 1);
+      lcd.print(F("  SensorOffset2:    "));
+      lcd.setCursor(0, 2);
+      lcd.print(F("  Timer1Delay:     s"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("->Timer2Delay:     s"));
 
       isPagePrinted = PageNumber;
     }

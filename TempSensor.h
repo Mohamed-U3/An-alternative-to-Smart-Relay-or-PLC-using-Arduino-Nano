@@ -26,6 +26,10 @@ signed char sensorOffset2 = 0;
 extern String Temp_Alarm_reason1 = "Empty";
 extern String Temp_Alarm_reason2 = "Empty";
 
+//Decliration of Variables in other file.
+extern unsigned long Com_1_OperationDelay;
+extern unsigned long Com_2_OperationDelay;
+
 
 void Thermister_init()
 {
@@ -37,10 +41,12 @@ void Thermister_init()
   EEPROM.get(float_SetPointDiff_ADDRESS, SetPointDiff);
   EEPROM.get(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
   EEPROM.get(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
+  EEPROM.get(unsigned_long_Com_1_OperationDelay_ADDRESS, Com_1_OperationDelay);
+  EEPROM.get(unsigned_long_Com_2_OperationDelay_ADDRESS, Com_2_OperationDelay);
 }
 
 //New Functions that gets the avg temperature.
-///*
+//*
 double Thermister1()
 {
   static double averageTemp = 0.0;
@@ -177,16 +183,6 @@ void IncreaseTemp(unsigned int * page_num)
     if(SetPointDiff>10) SetPointDiff=10;
     EEPROM.put(float_SetPointDiff_ADDRESS, SetPointDiff);
   }
-  else if(*page_num == 3)
-  {
-    sensorOffset1++;
-    EEPROM.put(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
-  }
-  else if(*page_num == 4)
-  {
-    sensorOffset2++;
-    EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
-  }
 }
 
 void IncreaseOffset(unsigned int * page_num)
@@ -200,6 +196,18 @@ void IncreaseOffset(unsigned int * page_num)
   {
     sensorOffset2++;
     EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
+  }
+  else if(*page_num == 3)
+  {
+    Com_1_OperationDelay += 10;
+    if(Com_1_OperationDelay>450) Com_1_OperationDelay=450;
+    EEPROM.put(unsigned_long_Com_1_OperationDelay_ADDRESS, Com_1_OperationDelay);
+  }
+  else if(*page_num == 4)
+  {
+    Com_2_OperationDelay += 10;
+    if(Com_2_OperationDelay>450) Com_2_OperationDelay=450;
+    EEPROM.put(unsigned_long_Com_2_OperationDelay_ADDRESS, Com_2_OperationDelay);
   }
 }
 
@@ -217,16 +225,6 @@ void DecreaseTemp(unsigned int * page_num)
     if(SetPointDiff<1) SetPointDiff=1;
     EEPROM.put(float_SetPointDiff_ADDRESS, SetPointDiff);
   }
-  else if(*page_num == 3)
-  {
-    sensorOffset1--;
-    EEPROM.put(signed_char_sensorOffset1_ADDRESS, sensorOffset1);
-  }
-  else if(*page_num == 4)
-  {
-    sensorOffset2--;
-    EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
-  }
 }
 
 void DecreaseOffset(unsigned int * page_num)
@@ -241,11 +239,23 @@ void DecreaseOffset(unsigned int * page_num)
     sensorOffset2--;
     EEPROM.put(signed_char_sensorOffset2_ADDRESS, sensorOffset2);
   }
+  else if(*page_num == 3)
+  {
+    Com_1_OperationDelay -= 10;
+    if(Com_1_OperationDelay<150) Com_1_OperationDelay=150;
+    EEPROM.put(unsigned_long_Com_1_OperationDelay_ADDRESS, Com_1_OperationDelay);
+  }
+  else if(*page_num == 4)
+  {
+    Com_2_OperationDelay -= 10;
+    if(Com_2_OperationDelay<150) Com_2_OperationDelay=150;
+    EEPROM.put(unsigned_long_Com_2_OperationDelay_ADDRESS, Com_2_OperationDelay);
+  }
 }
 
 void check_Input_Output_temp_def()
 {
-  if(millis() >= 6000)
+  if(millis() >= 7000)
   {
     if(Thermister1() <= Thermister2()) //if the Temprature that enter the system is colder then the temprature that gets out that means something is wrong.
     {
@@ -255,14 +265,14 @@ void check_Input_Output_temp_def()
     }
     if(Thermister1() < 4 || Thermister2() < 4)
     {
+      temperature_difference_Alarm = HIGH;
       Temp_Alarm_reason1 = "Low temp or sensor  ";
       Temp_Alarm_reason2 = " failure            ";
-      temperature_difference_Alarm = HIGH;
     }
     if (temperature_difference_Alarm == LOW)
     {
-      Temp_Alarm_reason1 = "Empty";
-      Temp_Alarm_reason2 = "Empty";
+      Temp_Alarm_reason1 = "                    ";
+      Temp_Alarm_reason2 = "                    ";
       //temperature_difference_Alarm = LOW;
     }
   }
