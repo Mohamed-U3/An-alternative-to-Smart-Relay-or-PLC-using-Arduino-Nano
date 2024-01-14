@@ -94,7 +94,8 @@ void Operation()
       else compressor1delay = false;
       //PreMillis1 = millis(); // reset the time counter.
     }
-    else compressor1delay = true;
+    else if (Thermister1() >= (SetPoint + SetPointDiff)) compressor1delay = true;
+    else compressor1delay = false;
   }
   
   if (Thermister1() <= (SetPoint + TempDefBetCom1andCom2) || anyAlarm || anyAlarm2)       //if we reached to the set point turn off the comperssor or there are any alarms
@@ -117,7 +118,8 @@ void Operation()
       else compressor2delay = false;
       //PreMillis2 = millis(); // reset the time counter.
     }
-    else compressor2delay = true;
+    else if (Thermister1() >= (SetPoint + TempDefBetCom1andCom2 + SetPointDiff)) compressor2delay = true;
+    else compressor2delay = false;
   }
 }
 #endif

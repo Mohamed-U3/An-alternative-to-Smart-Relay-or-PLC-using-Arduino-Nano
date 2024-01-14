@@ -430,12 +430,23 @@ void SubScreen0()
       lcd.setCursor(2, 0);
       lcd.print(PageNumber);
 
-      lcd.setCursor(12, 1);
+      lcd.setCursor(11, 1);
       lcd.print(GetMotor1_status());
      
-      lcd.setCursor(12, 2);
-      lcd.print(GetMotor2_status());
 
+      lcd.setCursor(15, 1);
+      if(anyAlarm ||anyAlarm1) lcd.print("Alarm");
+      else if(compressor1delay) lcd.print("Delay");
+      else lcd.print("     ");
+      
+     
+      lcd.setCursor(11, 2);
+      lcd.print(GetMotor2_status());
+      
+      lcd.setCursor(15, 2);
+      if(anyAlarm ||anyAlarm2) lcd.print("Alarm");
+      else if(compressor2delay) lcd.print("Delay");
+      else lcd.print("     ");
 //      lcd.setCursor(6, 3);
 //      lcd.print();
     }
