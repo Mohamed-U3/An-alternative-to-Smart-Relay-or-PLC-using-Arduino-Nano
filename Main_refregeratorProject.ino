@@ -12,6 +12,7 @@ void setup()
 {
 //  Serial.begin(9600);
   ISR_init();
+  keypad_init();
   Motors_init();
   ScreenInit();
   Thermister_init();

@@ -1,5 +1,14 @@
 #ifndef KeypadFounctions_H
 #define KeypadFounctions_H
+#include <Adafruit_PCF8574.h>
+
+Adafruit_PCF8574 pcf;
+
+#define PCF_BUTTON_UP       0  // on the GPIO expander!
+#define PCF_BUTTON_LEFT     1  // on the GPIO expander!
+#define PCF_BUTTON_DOWN     2  // on the GPIO expander!
+#define PCF_BUTTON_RIGHT    3  // on the GPIO expander!
+#define PCF_BUTTON_SELECT   4  // on the GPIO expander!
 
 #include "ScreensFunctions.h"
 #include "OutputFunctions.h"
@@ -20,22 +29,38 @@ int     ButtonsRead  =  0;
 /************************************************/
 /***************------ Functions ------**********/
 /************************************************/
+void keypad_init()
+{
+  if (!pcf.begin(0x20, &Wire))
+  {
+    Serial.println("Couldn't find PCF8574");
+    while (1);
+  }
+  
+  pcf.pinMode(PCF_BUTTON_UP     , INPUT_PULLUP);
+  pcf.pinMode(PCF_BUTTON_LEFT   , INPUT_PULLUP);
+  pcf.pinMode(PCF_BUTTON_DOWN   , INPUT_PULLUP);
+  pcf.pinMode(PCF_BUTTON_RIGHT  , INPUT_PULLUP);
+  pcf.pinMode(PCF_BUTTON_SELECT , INPUT_PULLUP);
+}
+
 int Read_Buttons()             //reading if button is clicked or not
 {
-  ButtonsRead = analogRead(A3);
-  delay(5);
+//  ButtonsRead = analogRead(A3);
+//  delay(5);
 //  lcd.setCursor(0,1);
 //  lcd.print(F("                    "));
 //  lcd.setCursor(0,1);
 //  lcd.print(F("button value: "));      //used for calibraation.
 //  lcd.print(ButtonsRead);
 //  Serial.println(ButtonsRead);        //used for calibraation.
-  if (ButtonsRead > 800)  return btnNONE;   //the value should be 1023
-  if (ButtonsRead < 38)    return btnRIGHT;  //the value should be 0
-  if (ButtonsRead < 80)   return btnDOWN;   //the value should be 145
-  if (ButtonsRead < 160)  return btnUP;     //the value should be 330
-  if (ButtonsRead < 500)  return btnLEFT;   //the value should be 506
-  if (ButtonsRead < 800)  return btnSELECT; //the value should be 933
+//  if (ButtonsRead > 800)                          return btnNONE;   //the value should be 1023
+
+  if (pcf.digitalRead(PCF_BUTTON_RIGHT)   == LOW)     return btnRIGHT;  //the value should be 0
+  if (pcf.digitalRead(PCF_BUTTON_DOWN)    == LOW)     return btnDOWN;   //the value should be 145
+  if (pcf.digitalRead(PCF_BUTTON_UP)      == LOW)     return btnUP;     //the value should be 330
+  if (pcf.digitalRead(PCF_BUTTON_LEFT)    == LOW)     return btnLEFT;   //the value should be 506
+  if (pcf.digitalRead(PCF_BUTTON_SELECT)  == LOW)     return btnSELECT; //the value should be 933
   return btnNONE;  // when all others fail, return this
 }
 
